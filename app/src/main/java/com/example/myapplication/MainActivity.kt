@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         // Setup NavController untuk navigasi antar fragment
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_profile)
+            setOf(R.id.navigation_home, R.id.navigation_user, R.id.navigation_settings, R.id.navigation_profile)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
