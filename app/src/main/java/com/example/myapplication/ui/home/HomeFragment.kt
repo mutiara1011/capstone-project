@@ -31,6 +31,48 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+        val locationTextView: TextView = binding.textLocation
+        homeViewModel.location.observe(viewLifecycleOwner) {
+            locationTextView.text = it
+        }
+
+        val dateTextView: TextView = binding.textDate
+        homeViewModel.date.observe(viewLifecycleOwner) {
+            dateTextView.text = it
+        }
+
+        val timeTextView: TextView = binding.textTime
+        homeViewModel.time.observe(viewLifecycleOwner) {
+            timeTextView.text = it
+        }
+
+        val suhuTextView: TextView = binding.textSuhu
+        homeViewModel.suhu.observe(viewLifecycleOwner) {
+            suhuTextView.text = it
+        }
+
+        val anginTextView: TextView = binding.textAngin
+        homeViewModel.angin.observe(viewLifecycleOwner) {
+            anginTextView.text = it
+        }
+
+        val anginValueTextView: TextView = binding.textAnginValue
+        homeViewModel.anginValue.observe(viewLifecycleOwner) {
+            anginValueTextView.text = it
+        }
+
+        val kelembapanTextView: TextView = binding.textLembap
+        homeViewModel.kelembapan.observe(viewLifecycleOwner) {
+            kelembapanTextView.text = it
+        }
+
+        val kelembapanValueTextView: TextView = binding.textLembapValue
+        homeViewModel.kelembapanValue.observe(viewLifecycleOwner) {
+            kelembapanValueTextView.text = it
+        }
+
+
         return root
     }
 
