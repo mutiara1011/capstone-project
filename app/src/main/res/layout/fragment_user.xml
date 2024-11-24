@@ -360,17 +360,20 @@
                         android:textStyle="bold"
                         android:textColor="#ffffff"
                         app:layout_constraintStart_toEndOf="@+id/index_pm10"
-                        app:layout_constraintTop_toTopOf="@+id/index_pm10"
-                        tools:text="Sedang" />
+                        tools:text="Sedang"
+                        tools:ignore="MissingConstraints" />
 
                     <TextView
                         android:id="@+id/description_pm10_2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_pm10"
                         android:textColor="#ffffff"
                         android:textSize="13sp"
                         android:textStyle="normal"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_pm10"
                         app:layout_constraintTop_toBottomOf="@+id/description_pm10"
                         tools:text="O3 (Ozon)" />
@@ -423,17 +426,20 @@
                         android:textStyle="bold"
                         android:textColor="#ffffff"
                         app:layout_constraintStart_toEndOf="@+id/index_pm2.5"
-                        app:layout_constraintTop_toTopOf="@+id/index_pm2.5"
-                        tools:text="Sedang" />
+                        tools:text="Sedang"
+                        tools:ignore="MissingConstraints" />
 
                     <TextView
                         android:id="@+id/description_pm2.5_2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_pm2.5"
                         android:textColor="#ffffff"
                         android:textSize="13sp"
                         android:textStyle="normal"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_pm2.5"
                         app:layout_constraintTop_toBottomOf="@+id/description_pm2.5"
                         tools:text="O3 (Ozon)" />

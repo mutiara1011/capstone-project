@@ -6,8 +6,19 @@ import androidx.lifecycle.ViewModel
 
 class SettingsViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+    // Example LiveData for potential future use
+    private val _language = MutableLiveData<String>().apply {
+        value = "Bahasa" // Default language
     }
-    val text: LiveData<String> = _text
+    val language: LiveData<String> = _language
+
+    private val _theme = MutableLiveData<String>().apply {
+        value = "Tema"
+    }
+    val theme: LiveData<String> = _theme
+
+    private val _notifications = MutableLiveData<String>().apply {
+        value = "Notifikasi"
+    }
+    val notifications: LiveData<String> = _notifications
 }
