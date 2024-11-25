@@ -39,38 +39,48 @@
 
                 <TextView
                     android:id="@+id/aqi_index"
-                    android:layout_width="77dp"
+                    android:layout_width="0dp"
                     android:layout_height="59dp"
+                    android:paddingStart="9dp"
+                    android:paddingEnd="9dp"
+                    android:ellipsize="none"
+                    android:singleLine="false"
                     android:gravity="center"
                     android:text="53"
                     android:textSize="45sp"
                     android:textStyle="bold"
                     android:textColor="#DFF2EB"
+
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/aqi_1" />
 
 
                 <TextView
                     android:id="@+id/description_1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:layout_toEndOf="@id/aqi_index"
                     android:textColor="#ffffff"
                     android:textSize="15sp"
                     android:textStyle="bold"
+                    android:ellipsize="none"
+                    android:singleLine="false"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/aqi_index"
                     app:layout_constraintTop_toTopOf="@+id/aqi_index"
                     tools:text="description" />
 
                 <TextView
                     android:id="@+id/description_2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/aqi_index"
                     android:textColor="#ffffff"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:ellipsize="none"
+                    android:singleLine="false"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/aqi_index"
                     app:layout_constraintTop_toBottomOf="@+id/description_1"
                     tools:text="description" />
@@ -128,6 +138,41 @@
                 android:background="#7AB2D3">
 
                 <TextView
+                    android:id="@+id/rekomendasi2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rekomendasi"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/deskripsi_rekomendasi2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="This is the content inside the first CardView."
+                    android:textSize="16sp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:background="#7AB2D3">
+
+                <TextView
                     android:id="@+id/aqi_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -149,8 +194,12 @@
 
                     <TextView
                         android:id="@+id/index_o3"
-                        android:layout_width="77dp"
+                        android:layout_width="0dp"
                         android:layout_height="59dp"
+                        android:paddingStart="9dp"
+                        android:paddingEnd="9dp"
+                        android:ellipsize="none"
+                        android:singleLine="false"
                         android:gravity="center"
                         android:text="53"
                         android:textColor="#DFF2EB"
@@ -163,36 +212,45 @@
 
                     <TextView
                         android:id="@+id/description_o3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_o3"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#ffffff"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_o3"
                         app:layout_constraintTop_toTopOf="@+id/index_o3"
                         tools:text="Sedang" />
 
                     <TextView
                         android:id="@+id/description_o3_2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_o3"
                         android:textColor="#ffffff"
                         android:textSize="13sp"
                         android:textStyle="normal"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_o3"
                         app:layout_constraintTop_toBottomOf="@+id/description_o3"
                         tools:text="O3 (Ozon)" />
 
                     <TextView
                         android:id="@+id/description_o3_3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_o3"
                         android:textColor="#ffffff"
                         android:textSize="10sp"
                         android:textStyle="normal"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_o3"
                         app:layout_constraintTop_toBottomOf="@+id/description_o3_2"
                         tools:text="31,56 μg/m³" />
@@ -212,8 +270,12 @@
 
                     <TextView
                         android:id="@+id/index_co"
-                        android:layout_width="77dp"
+                        android:layout_width="0dp"
                         android:layout_height="59dp"
+                        android:paddingStart="9dp"
+                        android:paddingEnd="9dp"
+                        android:ellipsize="none"
+                        android:singleLine="false"
                         android:gravity="center"
                         android:text="53"
                         android:textColor="#DFF2EB"
@@ -226,36 +288,45 @@
 
                     <TextView
                         android:id="@+id/description_co"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_co"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#ffffff"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_co"
                         app:layout_constraintTop_toTopOf="@+id/index_co"
                         tools:text="Sedang" />
 
                     <TextView
                         android:id="@+id/description_co_2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_co"
                         android:textColor="#ffffff"
                         android:textSize="13sp"
                         android:textStyle="normal"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_co"
                         app:layout_constraintTop_toBottomOf="@+id/description_co"
                         tools:text="O3 (Ozon)" />
 
                     <TextView
                         android:id="@+id/description_co_3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_co"
                         android:textColor="#ffffff"
                         android:textSize="10sp"
                         android:textStyle="normal"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_co"
                         app:layout_constraintTop_toBottomOf="@+id/description_co_2"
                         tools:text="31,56 μg/m³" />
@@ -276,8 +347,12 @@
 
                     <TextView
                         android:id="@+id/index_no2"
-                        android:layout_width="77dp"
+                        android:layout_width="0dp"
                         android:layout_height="59dp"
+                        android:paddingStart="9dp"
+                        android:paddingEnd="9dp"
+                        android:ellipsize="none"
+                        android:singleLine="false"
                         android:gravity="center"
                         android:text="53"
                         android:textColor="#DFF2EB"
@@ -290,36 +365,45 @@
 
                     <TextView
                         android:id="@+id/description_no2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_no2"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#ffffff"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_no2"
                         app:layout_constraintTop_toTopOf="@+id/index_no2"
                         tools:text="Sedang" />
 
                     <TextView
                         android:id="@+id/description_no2_2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_no2"
                         android:textColor="#ffffff"
                         android:textSize="13sp"
                         android:textStyle="normal"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_no2"
                         app:layout_constraintTop_toBottomOf="@+id/description_no2"
                         tools:text="O3 (Ozon)" />
 
                     <TextView
                         android:id="@+id/description_no2_3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_no2"
                         android:textColor="#ffffff"
                         android:textSize="10sp"
                         android:textStyle="normal"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_no2"
                         app:layout_constraintTop_toBottomOf="@+id/description_no2_2"
                         tools:text="31,56 μg/m³" />
@@ -339,8 +423,12 @@
 
                     <TextView
                         android:id="@+id/index_pm10"
-                        android:layout_width="77dp"
+                        android:layout_width="0dp"
                         android:layout_height="59dp"
+                        android:paddingStart="9dp"
+                        android:paddingEnd="9dp"
+                        android:ellipsize="none"
+                        android:singleLine="false"
                         android:gravity="center"
                         android:text="53"
                         android:textColor="#DFF2EB"
@@ -353,12 +441,15 @@
 
                     <TextView
                         android:id="@+id/description_pm10"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_pm10"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#ffffff"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_pm10"
                         tools:text="Sedang"
                         tools:ignore="MissingConstraints" />
@@ -380,12 +471,15 @@
 
                     <TextView
                         android:id="@+id/description_pm10_3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_pm10"
                         android:textColor="#ffffff"
                         android:textSize="10sp"
                         android:textStyle="normal"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_pm10"
                         app:layout_constraintTop_toBottomOf="@+id/description_pm10_2"
                         tools:text="31,56 μg/m³" />
@@ -405,8 +499,12 @@
 
                     <TextView
                         android:id="@+id/index_pm2.5"
-                        android:layout_width="77dp"
+                        android:layout_width="0dp"
                         android:layout_height="59dp"
+                        android:paddingStart="9dp"
+                        android:paddingEnd="9dp"
+                        android:ellipsize="none"
+                        android:singleLine="false"
                         android:gravity="center"
                         android:text="53"
                         android:textColor="#DFF2EB"
@@ -419,15 +517,17 @@
 
                     <TextView
                         android:id="@+id/description_pm2.5"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_pm2.5"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#ffffff"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_pm2.5"
-                        tools:text="Sedang"
-                        tools:ignore="MissingConstraints" />
+                        tools:text="Sedang"/>
 
                     <TextView
                         android:id="@+id/description_pm2.5_2"
@@ -446,12 +546,15 @@
 
                     <TextView
                         android:id="@+id/description_pm2.5_3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/index_pm2.5"
                         android:textColor="#ffffff"
                         android:textSize="10sp"
                         android:textStyle="normal"
+                        android:ellipsize="none"
+                        android:singleLine="false"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/index_pm2.5"
                         app:layout_constraintTop_toBottomOf="@+id/description_pm2.5_2"
                         tools:text="31,56 μg/m³" />
@@ -471,8 +574,12 @@
 
                     <TextView
                         android:id="@+id/index_so2"
-                        android:layout_width="77dp"
+                        android:layout_width="0dp"
                         android:layout_height="59dp"
+                        android:paddingStart="9dp"
+                        android:paddingEnd="9dp"
+                        android:ellipsize="none"
+                        android:singleLine="false"
                         android:gravity="center"
                         android:text="53"
                         android:textSize="45sp"

@@ -4,86 +4,75 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
-import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.ui.user.UserViewModel
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val userViewModel: UserViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        // Observasi polutan dengan nilai AQI tertinggi
+        userViewModel.pollutants.observe(viewLifecycleOwner) { pollutants ->
+            val highestPollutant = pollutants.maxByOrNull { it.value.index.toIntOrNull() ?: 0 }
+            highestPollutant?.let {
+                homeViewModel.updateHighestPollutant(it.value)
+            } ?: homeViewModel.updateHighestPollutant(null)
         }
 
-        val locationTextView: TextView = binding.textLocation
-        homeViewModel.location.observe(viewLifecycleOwner) {
-            locationTextView.text = it
+        // Observasi nilai tertinggi untuk UI
+        homeViewModel.highestPollutant.observe(viewLifecycleOwner) {
+            binding.textHome.text = it
         }
 
-        val dateTextView: TextView = binding.textDate
-        homeViewModel.date.observe(viewLifecycleOwner) {
-            dateTextView.text = it
-        }
+        // Observasi data cuaca dan lokasi
+        observeWeatherData()
 
-        val timeTextView: TextView = binding.textTime
-        homeViewModel.time.observe(viewLifecycleOwner) {
-            timeTextView.text = it
-        }
+        return binding.root
+    }
 
-        val suhuTextView: TextView = binding.textSuhu
-        homeViewModel.suhu.observe(viewLifecycleOwner) {
-            suhuTextView.text = it
-        }
+    private fun observeWeatherData() {
+        // Observasi lokasi
+        homeViewModel.location.observe(viewLifecycleOwner) { binding.textLocation.text = it }
 
-        val anginTextView: TextView = binding.textAngin
-        homeViewModel.angin.observe(viewLifecycleOwner) {
-            anginTextView.text = it
-        }
+        // Observasi tanggal
+        homeViewModel.date.observe(viewLifecycleOwner) { binding.textDate.text = it }
 
-        val anginValueTextView: TextView = binding.textAnginValue
-        homeViewModel.anginValue.observe(viewLifecycleOwner) {
-            anginValueTextView.text = it
-        }
+        // Observasi waktu
+        homeViewModel.time.observe(viewLifecycleOwner) { binding.textTime.text = it }
 
-        val kelembapanTextView: TextView = binding.textLembap
-        homeViewModel.kelembapan.observe(viewLifecycleOwner) {
-            kelembapanTextView.text = it
-        }
+        // Observasi suhu
+        homeViewModel.suhu.observe(viewLifecycleOwner) { binding.textSuhu.text = it }
 
-        val kelembapanValueTextView: TextView = binding.textLembapValue
-        homeViewModel.kelembapanValue.observe(viewLifecycleOwner) {
-            kelembapanValueTextView.text = it
-        }
+        // Observasi angin
+        homeViewModel.angin.observe(viewLifecycleOwner) { binding.textAngin.text = it }
+        homeViewModel.anginValue.observe(viewLifecycleOwner) { binding.textAnginValue.text = it }
 
-
-        return root
+        // Observasi kelembapan
+        homeViewModel.kelembapan.observe(viewLifecycleOwner) { binding.textLembap.text = it }
+        homeViewModel.kelembapanValue.observe(viewLifecycleOwner) { binding.textLembapValue.text = it }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set logo saat berada di HomeFragment
         (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            setDisplayShowTitleEnabled(false)   // Sembunyikan teks judul
-            setLogo(R.drawable.logo)            // Gunakan logo Anda
-            setDisplayUseLogoEnabled(true)      // Tampilkan logo
+            setDisplayShowTitleEnabled(false)
+            setLogo(R.drawable.logo)
+            setDisplayUseLogoEnabled(true)
         }
     }
 
@@ -95,10 +84,9 @@ class HomeFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
 
-        // Kembalikan pengaturan toolbar ketika keluar dari HomeFragment
         (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            setDisplayShowTitleEnabled(true)  // Tampilkan kembali teks judul
-            setLogo(null)                     // Hapus logo
+            setDisplayShowTitleEnabled(true)
+            setLogo(null)
         }
     }
 }
