@@ -28,18 +28,23 @@ class HomeFragment : Fragment() {
         // Observasi polutan dengan nilai AQI tertinggi
         userViewModel.pollutants.observe(viewLifecycleOwner) { pollutants ->
             val highestPollutant = pollutants.maxByOrNull { it.value.index.toIntOrNull() ?: 0 }
-            highestPollutant?.let {
-                homeViewModel.updateHighestPollutant(it.value)
-            } ?: homeViewModel.updateHighestPollutant(null)
+            homeViewModel.updateHighestPollutant(highestPollutant?.value)
         }
 
-        // Observasi nilai tertinggi untuk UI
-        homeViewModel.highestPollutant.observe(viewLifecycleOwner) {
-            binding.textHome.text = it
+// Observasi nilai tertinggi untuk UI
+        homeViewModel.highestPollutant.observe(viewLifecycleOwner) { highest ->
+            if (highest != null) {
+                binding.textAqi.text = highest.index
+                binding.textDescription.text = highest.getAQIDescription()
+            } else {
+                binding.textAqi.text = "Tidak ada data AQI."
+                binding.textDescription.text = "Tidak tersedia."
+            }
         }
 
-        // Observasi data cuaca dan lokasi
+// Observasi data cuaca dan lokasi
         observeWeatherData()
+
 
         return binding.root
     }

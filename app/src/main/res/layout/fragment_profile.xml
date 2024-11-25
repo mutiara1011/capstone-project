@@ -1,107 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="80dp"
-    android:clipToPadding="false">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="50dp"
+    android:paddingTop="20dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        tools:ignore="ScrollViewSize">
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/about"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:cardBackgroundColor="#7AB2D3"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:cardElevation="4dp">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp">
+                android:padding="9dp"
+                android:background="#7AB2D3">
 
                 <ImageView
-                    android:id="@+id/icon_angin"
+                    android:id="@+id/icon_profile"
                     android:layout_width="110dp"
                     android:layout_height="110dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/profile" />
+                    android:src="@drawable/profile"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
-                <LinearLayout
-                    android:id="@+id/location_container"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/text_nama"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:orientation="vertical"
-                    android:gravity="center_vertical"
-                    android:layout_weight="1">
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/icon_profile"
+                    app:layout_constraintTop_toTopOf="@+id/icon_profile"
+                    tools:text="Syahid Ashabul Fikri" />
 
-                    <TextView
-                        android:id="@+id/text_angin"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/white"
-                        android:textSize="25sp"
-                        android:textStyle="bold"
-                        tools:text="Syahid Ashabul Fikri" />
+                <TextView
+                    android:id="@+id/text_about"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toEndOf="@+id/icon_profile"
+                    app:layout_constraintTop_toBottomOf="@+id/text_nama"
+                    tools:text="Bergabung sejak 2022" />
 
-                    <TextView
-                        android:id="@+id/text_angin_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
-                        tools:text="Bergabung sejak 2022" />
-                </LinearLayout>
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/btnEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
             android:text="Edit Profile"
             android:textColor="@color/white"
-            app:backgroundTint="#7AB2D3"
-            app:layout_constraintTop_toBottomOf="@id/about"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:backgroundTint="#7AB2D3" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/recommendation"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="#7AB2D3"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            app:layout_constraintTop_toBottomOf="@id/btnEdit"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:cardElevation="4dp">
 
-            <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="16dp"
-                android:text="Rekomendasi"
-                android:textColor="@android:color/white"
-                android:textSize="15dp"
-                tools:ignore="TextSizeCheck" />
+                android:padding="9dp"
+                android:background="#7AB2D3">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Rekomendasi"
+                    android:textColor="@android:color/white"
+                    android:textSize="15dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:ignore="TextSizeCheck" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
 </ScrollView>
