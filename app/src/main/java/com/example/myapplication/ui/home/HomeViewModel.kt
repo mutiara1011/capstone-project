@@ -9,14 +9,13 @@ import java.util.*
 
 class HomeViewModel : ViewModel() {
 
-    private val _highestPollutant = MutableLiveData<String>()
-    val highestPollutant: LiveData<String> = _highestPollutant
+    private val _highestPollutant = MutableLiveData<PollutantData?>()
+    val highestPollutant: LiveData<PollutantData?> = _highestPollutant
 
     fun updateHighestPollutant(pollutant: PollutantData?) {
-        _highestPollutant.value = pollutant?.let {
-            "${it.index} - ${it.getAQIDescription()}"
-        } ?: "Tidak ada data polutan."
+        _highestPollutant.value = pollutant
     }
+
 
     private val _location = MutableLiveData("Jakarta")
     val location: LiveData<String> = _location

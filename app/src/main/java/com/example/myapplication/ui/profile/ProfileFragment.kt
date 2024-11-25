@@ -26,12 +26,12 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val nameTextView: TextView = binding.textAngin
+        val nameTextView: TextView = binding.textNama
         profileViewModel.name.observe(viewLifecycleOwner) {
             nameTextView.text = it
         }
 
-        val joinYearTextView: TextView = binding.textAnginValue
+        val joinYearTextView: TextView = binding.textAbout
         profileViewModel.joinYear.observe(viewLifecycleOwner) {
             joinYearTextView.text = it
         }
