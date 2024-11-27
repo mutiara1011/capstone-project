@@ -126,7 +126,7 @@
                         android:gravity="center">
 
                         <ImageView
-                            android:id="@+id/icon_suhu"
+                            android:id="@+id/icon_degree"
                             android:layout_width="50dp"
                             android:layout_height="150dp"
                             android:layout_gravity="center_vertical"
@@ -134,7 +134,7 @@
                             android:src="@drawable/suhu" />
 
                         <TextView
-                            android:id="@+id/text_suhu"
+                            android:id="@+id/tvDegree"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -157,7 +157,7 @@
                     app:cardElevation="4dp">
 
                     <ImageView
-                        android:id="@+id/icon_weather"
+                        android:id="@+id/ivWeatherIcon"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_gravity="center"
@@ -184,7 +184,7 @@
                         android:padding="5dp">
 
                         <ImageView
-                            android:id="@+id/icon_angin"
+                            android:id="@+id/icon_wind"
                             android:layout_width="110dp"
                             android:layout_height="110dp"
                             android:layout_gravity="center_horizontal"
@@ -192,17 +192,17 @@
                             android:src="@drawable/windy" />
 
                         <TextView
-                            android:id="@+id/text_angin"
+                            android:id="@+id/text_wind"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="4dp"
                             android:textColor="@color/white"
                             android:textSize="15sp"
-                            tools:text="Angin" />
+                            android:text="@string/wind_speed" />
 
                         <TextView
-                            android:id="@+id/text_angin_value"
+                            android:id="@+id/tvWindSpeed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
@@ -231,7 +231,7 @@
                         android:padding="5dp">
 
                         <ImageView
-                            android:id="@+id/icon_lembap"
+                            android:id="@+id/icon_humid"
                             android:layout_width="110dp"
                             android:layout_height="110dp"
                             android:layout_gravity="center_horizontal"
@@ -239,17 +239,17 @@
                             android:src="@drawable/kelembapan" />
 
                         <TextView
-                            android:id="@+id/text_lembap"
+                            android:id="@+id/text_humid"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="4dp"
                             android:textColor="@color/white"
                             android:textSize="15sp"
-                            tools:text="Kelembapan" />
+                            android:text="@string/humidity" />
 
                         <TextView
-                            android:id="@+id/text_lembap_value"
+                            android:id="@+id/tvHumidity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"

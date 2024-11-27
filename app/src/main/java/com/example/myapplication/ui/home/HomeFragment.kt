@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,8 +38,8 @@ class HomeFragment : Fragment() {
                 binding.textAqi.text = highest.index
                 binding.textDescription.text = highest.getAQIDescription()
             } else {
-                binding.textAqi.text = "Tidak ada data AQI."
-                binding.textDescription.text = "Tidak tersedia."
+                binding.textAqi.text = getString(R.string.aqi_not_available)
+                binding.textDescription.text = getString(R.string.not_availabe)
             }
         }
 
@@ -59,16 +60,45 @@ class HomeFragment : Fragment() {
         // Observasi waktu
         homeViewModel.time.observe(viewLifecycleOwner) { binding.textTime.text = it }
 
-        // Observasi suhu
-        homeViewModel.suhu.observe(viewLifecycleOwner) { binding.textSuhu.text = it }
+        homeViewModel.aqi.observe(viewLifecycleOwner) { data ->
+            if (data != null) {
+                Log.d("HomeFragment", "Received AQI data: $data")
+                binding.tvDegree.text = "${data.degree}°" // Menampilkan degree
+                binding.tvWindSpeed.text = "${data.wind} km/h" // Menampilkan kecepatan angin
+                binding.tvHumidity.text = "${data.humidity}%" // Menampilkan kelembapan
 
-        // Observasi angin
-        homeViewModel.angin.observe(viewLifecycleOwner) { binding.textAngin.text = it }
-        homeViewModel.anginValue.observe(viewLifecycleOwner) { binding.textAnginValue.text = it }
+                // Tentukan ikon berdasarkan kondisi cuaca
+                val weatherCondition = data.degreeImg?: "Sunny"  // default "Sunny" jika null
 
-        // Observasi kelembapan
-        homeViewModel.kelembapan.observe(viewLifecycleOwner) { binding.textLembap.text = it }
-        homeViewModel.kelembapanValue.observe(viewLifecycleOwner) { binding.textLembapValue.text = it }
+                // Menentukan resource ikon berdasarkan kondisi cuaca
+                val iconResource = when (weatherCondition) {
+                    "Rainy" -> R.drawable.rainy
+                    "Stormy" -> R.drawable.stormy
+                    "Sunny" -> R.drawable.sunny
+                    "Foggy" -> R.drawable.foggy
+                    "Cloudy" -> R.drawable.cloudy
+                    "Partly Cloudy" -> R.drawable.partly_cloudy
+                    "Mostly Cloudy" -> R.drawable.mostly_cloudy
+                    "Full Moon" -> R.drawable.full_moon
+                    "Partly Cloudy Moon" -> R.drawable.partly_cloudy_moon
+                    "Mostly Cloudy Moon" -> R.drawable.mostly_cloudy_moon
+
+
+                    else -> R.drawable.ic_default_weather // Default icon jika kondisi cuaca tidak dikenal
+                }
+
+                // Mengubah ikon cuaca di UI
+                binding.ivWeatherIcon.setImageResource(iconResource)
+            } else {
+                Log.d("HomeFragment", "No AQI data available.")
+                binding.tvDegree.text = "-"
+                binding.tvWindSpeed.text = "-"
+                binding.tvHumidity.text = "-"
+
+                // Menampilkan ikon default jika tidak ada data
+                binding.ivWeatherIcon.setImageResource(R.drawable.ic_default_weather)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

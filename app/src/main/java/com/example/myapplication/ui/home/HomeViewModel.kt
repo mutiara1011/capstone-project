@@ -1,9 +1,16 @@
 package com.example.myapplication.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.data.remote.response.AqiResponse
+import com.example.myapplication.data.remote.response.Data
+import com.example.myapplication.data.remote.retrofit.ApiConfig
 import com.example.myapplication.ui.user.PollutantData
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -15,7 +22,6 @@ class HomeViewModel : ViewModel() {
     fun updateHighestPollutant(pollutant: PollutantData?) {
         _highestPollutant.value = pollutant
     }
-
 
     private val _location = MutableLiveData("Jakarta")
     val location: LiveData<String> = _location
@@ -30,18 +36,31 @@ class HomeViewModel : ViewModel() {
     )
     val time: LiveData<String> = _time
 
-    private val _suhu = MutableLiveData("30°")
-    val suhu: LiveData<String> = _suhu
+    private val _aqi = MutableLiveData<Data?>()
+    val aqi: LiveData<Data?> = _aqi
 
-    private val _angin = MutableLiveData("Kecepatan angin")
-    val angin: LiveData<String> = _angin
+    init {
+        getWeather()
+    }
 
-    private val _anginValue = MutableLiveData("10 km/jam")
-    val anginValue: LiveData<String> = _anginValue
+    private fun getWeather() {
+        val client = ApiConfig.getApiService.getAQI()
+        client.enqueue(object : Callback<AqiResponse> {
+            override fun onResponse(
+                call: Call<AqiResponse>,
+                response: Response<AqiResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("HomeViewModel", "API Response: ${response.body()}")
+                    _aqi.value = response.body()?.data
+                } else {
+                    Log.e("HomeViewModel", "Error: ${response.errorBody()}")
+                }
+            }
 
-    private val _kelembapan = MutableLiveData("Kelembapan")
-    val kelembapan: LiveData<String> = _kelembapan
-
-    private val _kelembapanValue = MutableLiveData("85%")
-    val kelembapanValue: LiveData<String> = _kelembapanValue
+            override fun onFailure(call: Call<AqiResponse>, t: Throwable) {
+                Log.e("HomeViewModel", "Error fetching data", t)
+            }
+        })
+    }
 }
