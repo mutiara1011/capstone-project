@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.ListView
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -15,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSettingsBinding
-import com.example.myapplication.ui.user.UserViewModel
 
 class SettingsFragment : Fragment() {
 
@@ -115,36 +115,44 @@ class SettingsFragment : Fragment() {
 
 
     private fun showThemeDialog() {
-        val themes = arrayOf("Light Mode", "Dark Mode")
         val sharedPreferences =
             requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE)
         val currentTheme = sharedPreferences.getString("theme", "Light Mode")
-        val currentIndex = themes.indexOf(currentTheme)
 
-        AlertDialog.Builder(requireContext())
-            .setTitle("Pilih Tema")
-            .setSingleChoiceItems(themes, currentIndex) { dialog, which ->
-                val selectedTheme = themes[which]
+        // Inflate custom layout
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_theme, null)
+        val radioGroup = dialogView.findViewById<RadioGroup>(R.id.theme_group)
 
-                // Apply selected theme
-                when (which) {
-                    0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) // Light Mode
-                    1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) // Dark Mode
+        // Pre-select the current theme
+        if (currentTheme == "Dark Mode") {
+            radioGroup.check(R.id.dark_mode)
+        } else {
+            radioGroup.check(R.id.light_mode)
+        }
+
+        // Build AlertDialog with custom layout
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setNegativeButton("Batal") { d, _ -> d.dismiss() }
+            .setPositiveButton("OK") { _, _ ->
+                val selectedTheme = if (radioGroup.checkedRadioButtonId == R.id.dark_mode) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    "Dark Mode"
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    "Light Mode"
                 }
 
-                // Save theme selection
-                val editor = sharedPreferences.edit()
-                editor.putString("theme", selectedTheme)
-                editor.apply()
+                // Save selected theme
+                sharedPreferences.edit().putString("theme", selectedTheme).apply()
 
                 Toast.makeText(requireContext(), "Tema dipilih: $selectedTheme", Toast.LENGTH_SHORT).show()
-                dialog.dismiss()
             }
-            .setNegativeButton("Batal") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+            .create()
+
+        dialog.show()
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

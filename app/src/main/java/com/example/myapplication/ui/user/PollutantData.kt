@@ -14,7 +14,8 @@ data class PollutantData(
             in 101..150 -> "Tidak Sehat bagi Kelompok Sensitif"
             in 151..200 -> "Tidak Sehat"
             in 201..300 -> "Sangat Tidak Sehat"
-            else -> "Berbahaya"
+            in 301 .. 500 -> "Berbahaya"
+            else -> " Sangat Berbahaya"
         }
     }
 }

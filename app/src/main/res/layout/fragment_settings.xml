@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="9dp"
-                android:background="#7AB2D3">
+                android:background="?attr/colorPrimaryVariant">
 
                 <TextView
                     android:id="@+id/language"
@@ -56,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="9dp"
-                android:background="#7AB2D3">
+                android:background="?attr/colorPrimaryVariant">
 
                 <TextView
                     android:id="@+id/theme"
@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="9dp"
-                android:background="#7AB2D3">
+                android:background="?attr/colorPrimaryVariant">
 
                 <TextView
                     android:id="@+id/notifications"
