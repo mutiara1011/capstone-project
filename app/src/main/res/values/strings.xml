@@ -13,4 +13,8 @@
     <string name="icon_lembap">Icon Kelembapan</string>
     <string name="icon_weather">Icon Weather</string>
     <string name="icon_angin">Icon Angin\n</string>
+    <string name="wind_speed">Kecepatan Angin</string>
+    <string name="humidity">Kelembapan</string>
+    <string name="aqi_not_available">Tidak ada data AQI.</string>
+    <string name="not_availabe">Tidak tersedia.</string>
 </resources>
