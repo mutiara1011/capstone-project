@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="?attr/colorPrimaryVariant">
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="8dp"
+        android:background="@drawable/line" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/text_index"
+            android:layout_width="0dp"
+            android:layout_height="59dp"
+            android:paddingStart="9dp"
+            android:paddingEnd="9dp"
+            android:gravity="center"
+            android:text="53"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="45sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSecondary"
+            app:layout_constraintStart_toEndOf="@+id/text_index"
+            app:layout_constraintTop_toTopOf="@+id/text_index"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Sedang" />
+
+        <TextView
+            android:id="@+id/text_details"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="13sp"
+            app:layout_constraintStart_toEndOf="@+id/text_index"
+            app:layout_constraintTop_toBottomOf="@+id/text_description"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="O3 (Ozon)" />
+
+        <TextView
+            android:id="@+id/text_concentration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="10sp"
+            app:layout_constraintStart_toEndOf="@+id/text_index"
+            app:layout_constraintTop_toBottomOf="@+id/text_details"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="31,56 μg/m³" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

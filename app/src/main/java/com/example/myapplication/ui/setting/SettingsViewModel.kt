@@ -6,9 +6,8 @@ import androidx.lifecycle.ViewModel
 
 class SettingsViewModel : ViewModel() {
 
-    // Example LiveData for potential future use
     private val _language = MutableLiveData<String>().apply {
-        value = "Bahasa" // Default language
+        value = "Bahasa"
     }
     val language: LiveData<String> = _language
 
