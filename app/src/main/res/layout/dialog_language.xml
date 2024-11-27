@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#7AB2D3">
+    android:background="?attr/colorPrimaryVariant">
 
     <!-- Header dengan judul dan tombol close -->
     <LinearLayout
@@ -47,5 +47,5 @@
         android:divider="@color/black"
         android:dividerHeight="1dp"
         android:padding="8dp"
-        android:background="#7AB2D3" />
+        android:background="?attr/colorPrimaryVariant" />
 </LinearLayout>
