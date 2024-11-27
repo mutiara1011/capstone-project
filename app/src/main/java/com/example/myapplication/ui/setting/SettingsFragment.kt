@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageButton
-import android.widget.ListView
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -24,13 +24,12 @@ class SettingsFragment : Fragment() {
 
     private lateinit var settingsViewModel: SettingsViewModel
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        settingsViewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
+        settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
@@ -46,12 +45,10 @@ class SettingsFragment : Fragment() {
             binding.notifications.text = it
         }
 
-        // Handle language card click
         binding.language.setOnClickListener {
             showLanguageDialog()
         }
 
-        // Handle theme card click
         binding.theme.setOnClickListener {
             showThemeDialog()
         }
@@ -60,95 +57,104 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showLanguageDialog() {
-        val languages = arrayOf("English", "Bahasa Indonesia", "Español", "Français")
+        val languages = arrayOf("English", "Bahasa Indonesia")
         val sharedPreferences =
             requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE)
         val currentLanguage = sharedPreferences.getString("language", "English")
 
-        // Inflate custom layout
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_language, null)
-        val listView = dialogView.findViewById<ListView>(R.id.language_list)
+        val radioGroup = dialogView.findViewById<RadioGroup>(R.id.language_radio_group)
+        val okButton = dialogView.findViewById<Button>(R.id.ok_button)
 
-        // Set up adapter for ListView
-        val adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_list_item_single_choice,
-            languages
-        )
-        listView.adapter = adapter
+        languages.forEach { language ->
+            val radioButton = RadioButton(requireContext()).apply {
+                text = language
+                textSize = 16f
+                setTextColor(resources.getColor(android.R.color.white, null))
+            }
+            radioGroup.addView(radioButton)
 
-        // Pre-select the current language
-        val currentIndex = languages.indexOf(currentLanguage)
-        listView.choiceMode = ListView.CHOICE_MODE_SINGLE
-        listView.setItemChecked(currentIndex, true)
-
-        // Build AlertDialog with custom layout
-        val dialog = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .setCancelable(true) // Ensure the dialog can be dismissed by clicking outside
-            .create()
-
-        // Handle item clicks
-        listView.setOnItemClickListener { _, _, position, _ ->
-            val selectedLanguage = languages[position]
-            Toast.makeText(
-                requireContext(),
-                "Bahasa dipilih: $selectedLanguage",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            // Save selected language
-            sharedPreferences.edit().putString("language", selectedLanguage).apply()
-
-            dialog.dismiss()
+            if (language == currentLanguage) {
+                radioButton.isChecked = true
+            }
         }
 
-        // Handle close button (X)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        okButton.setOnClickListener {
+            val selectedRadioButtonId = radioGroup.checkedRadioButtonId
+            if (selectedRadioButtonId != -1) {
+                val selectedRadioButton = dialogView.findViewById<RadioButton>(selectedRadioButtonId)
+                val selectedLanguage = selectedRadioButton.text.toString()
+
+                Toast.makeText(
+                    requireContext(),
+                    "Bahasa dipilih: $selectedLanguage",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                sharedPreferences.edit().putString("language", selectedLanguage).apply()
+                dialog.dismiss()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Silakan pilih bahasa terlebih dahulu",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
         val closeButton = dialogView.findViewById<ImageButton>(R.id.close_button)
         closeButton.setOnClickListener {
-            dialog.dismiss()  // Dismiss the dialog when the close button (X) is clicked
+            dialog.dismiss()
         }
 
         dialog.show()
     }
-
-
 
     private fun showThemeDialog() {
         val sharedPreferences =
             requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE)
         val currentTheme = sharedPreferences.getString("theme", "Light Mode")
 
-        // Inflate custom layout
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_theme, null)
         val radioGroup = dialogView.findViewById<RadioGroup>(R.id.theme_group)
+        val okButton = dialogView.findViewById<Button>(R.id.ok_button)
 
-        // Pre-select the current theme
         if (currentTheme == "Dark Mode") {
             radioGroup.check(R.id.dark_mode)
         } else {
             radioGroup.check(R.id.light_mode)
         }
 
-        // Build AlertDialog with custom layout
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
-            .setNegativeButton("Batal") { d, _ -> d.dismiss() }
-            .setPositiveButton("OK") { _, _ ->
-                val selectedTheme = if (radioGroup.checkedRadioButtonId == R.id.dark_mode) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    "Dark Mode"
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    "Light Mode"
-                }
-
-                // Save selected theme
-                sharedPreferences.edit().putString("theme", selectedTheme).apply()
-
-                Toast.makeText(requireContext(), "Tema dipilih: $selectedTheme", Toast.LENGTH_SHORT).show()
-            }
+            .setCancelable(true)
             .create()
+
+        okButton.setOnClickListener {
+            val selectedTheme = if (radioGroup.checkedRadioButtonId == R.id.dark_mode) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                "Dark Mode"
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                "Light Mode"
+            }
+
+            sharedPreferences.edit().putString("theme", selectedTheme).apply()
+
+            Toast.makeText(requireContext(), "Tema dipilih: $selectedTheme", Toast.LENGTH_SHORT).show()
+
+            dialog.dismiss()
+        }
+
+        val closeButton = dialogView.findViewById<ImageButton>(R.id.close_button)
+        closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
 
         dialog.show()
     }
