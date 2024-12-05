@@ -11,38 +11,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="10dp"
+        tools:background="#1F509A">
 
         <TextView
             android:id="@+id/text_aqi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="6dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="6dp"
-            android:textStyle="bold"
+            android:ellipsize="none"
+            android:fontFamily="@font/inria_serif_light"
             android:gravity="center"
+            android:singleLine="false"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="50sp"
-            android:ellipsize="none"
-            android:singleLine="false"
+            android:textStyle="bold"
             tools:text="Kualitas Udara" />
 
         <TextView
             android:id="@+id/text_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20dp"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="6dp"
+            android:ellipsize="none"
+            android:fontFamily="@font/inria_serif_light"
             android:gravity="center"
+            android:paddingBottom="20dp"
+            android:singleLine="false"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="30sp"
-            android:ellipsize="none"
-            android:singleLine="false"
-            tools:text="Kualitas Udara" />
+            tools:text="Deskripsi" />
 
         <LinearLayout
             android:id="@+id/location_container"
@@ -66,10 +69,11 @@
                 android:id="@+id/text_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:fontFamily="@font/inria_serif"
                 android:textColor="@color/white"
                 android:textSize="20sp"
-                android:layout_marginStart="2dp"
-                tools:text="Lokasi"/>
+                tools:text="Lokasi" />
 
         </LinearLayout>
 
@@ -79,9 +83,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:fontFamily="@font/inria_serif_light"
             android:gravity="start"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:text="Hari, tanggal bulan tahun" />
 
         <TextView
             android:id="@+id/text_time"
@@ -89,9 +95,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:fontFamily="@font/inria_serif_light"
+            android:gravity="start"
             android:textColor="@color/white"
             android:textSize="14sp"
-            android:gravity="start" />
+            tools:text="Jam" />
 
         <FrameLayout
             android:id="@+id/frameLayout"
@@ -139,6 +147,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:fontFamily="@font/inter_semibold"
                             android:textColor="@color/white"
                             android:textSize="50sp"
                             tools:text="30°" />
@@ -198,9 +207,10 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="4dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="@string/wind_speed"
                             android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:text="@string/wind_speed" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/tvWindSpeed"
@@ -208,6 +218,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="2dp"
+                            android:fontFamily="@font/inter_medium"
                             android:textColor="@color/white"
                             android:textSize="12sp"
                             tools:text="80 km/jam" />
@@ -245,9 +256,10 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="4dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="@string/humidity"
                             android:textColor="@color/white"
-                            android:textSize="15sp"
-                            android:text="@string/humidity" />
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/tvHumidity"
@@ -255,6 +267,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="2dp"
+                            android:fontFamily="@font/inter_medium"
                             android:textColor="@color/white"
                             android:textSize="12sp"
                             tools:text="90%" />
