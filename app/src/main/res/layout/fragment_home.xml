@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingBottom="50dp"
-    android:paddingTop="20dp">
+    android:paddingTop="30dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:ellipsize="none"
             android:fontFamily="@font/inria_serif_light"
             android:gravity="center"
-            android:paddingBottom="10dp"
+            android:paddingBottom="20dp"
             android:singleLine="false"
             android:textAlignment="center"
             android:textColor="@color/white"
@@ -54,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="6dp"
+            android:paddingTop="10dp"
             android:gravity="center_vertical"
             tools:ignore="UseCompoundDrawables">
 

@@ -17,4 +17,6 @@
     <string name="humidity">Kelembapan</string>
     <string name="aqi_not_available">Tidak ada data AQI.</string>
     <string name="not_availabe">Tidak tersedia.</string>
+    <string name="not_available">Not Available</string>
+    <string name="pollutant">Polutan Utama: %1$s (%2$s)</string>
 </resources>

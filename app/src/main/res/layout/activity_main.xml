@@ -14,7 +14,6 @@
         android:elevation="4dp"
         tools:ignore="MissingConstraints" />
 
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"

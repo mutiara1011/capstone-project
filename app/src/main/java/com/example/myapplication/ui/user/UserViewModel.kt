@@ -3,8 +3,19 @@ package com.example.myapplication.ui.user
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.remote.retrofit.ApiConfig
+import com.example.myapplication.data.remote.response.AqiDetailResponse
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class UserViewModel : ViewModel() {
+
+    private val _pollutants = MutableLiveData<List<PollutantData>>()
+    val pollutants: LiveData<List<PollutantData>> = _pollutants
+
     private val _aqiTitle = MutableLiveData<String>().apply {
         value = "Kualitas Udara"
     }
@@ -35,15 +46,53 @@ class UserViewModel : ViewModel() {
     }
     val aqiTitle2: LiveData<String> = _aqiTitle2
 
-    private val _pollutants = MutableLiveData<Map<String, PollutantData>>().apply {
-        value = mapOf(
-            "O3" to PollutantData("53", "Sedang", "O3 (Ozon)", "31,56 μg/m³"),
-            "CO" to PollutantData("45", "Baik", "CO (Karbon Monoksida)", "12,30 μg/m³"),
-            "NO2" to PollutantData("38", "Sedang", "NO2 (Nitrogen Dioksida)", "20,56 μg/m³"),
-            "PM10" to PollutantData("67", "Sedang", "PM10 (Partikulat < 10 mikron)", "40,12 μg/m³"),
-            "PM2.5" to PollutantData("102", "Tidak Sehat", "PM2.5 (Partikulat < 2,5 mikron)", "25,00 μg/m³"),
-            "SO2" to PollutantData("30", "Baik", "SO2 (Sulfur Dioksida)", "10,00 μg/m³")
-        )
+    fun fetchPollutants() {
+        viewModelScope.launch {
+            ApiConfig.getApiService.getAQIDetail().enqueue(object : Callback<AqiDetailResponse> {
+                override fun onResponse(call: Call<AqiDetailResponse>, response: Response<AqiDetailResponse>) {
+                    if (response.isSuccessful) {
+                        val details = response.body()?.data?.detail ?: emptyList()
+
+                        val pollutantsList = details.map { detail ->
+                            PollutantData(
+                                index = detail.aqiIndex.toString(),
+                                description = getAQIDescription(detail.aqiIndex ?: 0),
+                                title = "${detail.polutantType?.uppercase()} (${getPollutantFullName(detail.polutantType)})",
+                                details = "${detail.concentrate} μg/m³"
+                            )
+                        }
+
+                        _pollutants.postValue(pollutantsList)
+                    }
+                }
+
+                override fun onFailure(call: Call<AqiDetailResponse>, t: Throwable) {
+                }
+            })
+        }
     }
-    val pollutants: LiveData<Map<String, PollutantData>> = _pollutants
+
+    private fun getAQIDescription(aqiIndex: Int): String {
+        return when (aqiIndex) {
+            in 0..50 -> "Baik"
+            in 51..100 -> "Sedang"
+            in 101..150 -> "Tidak Sehat bagi Kelompok Sensitif"
+            in 151..200 -> "Tidak Sehat"
+            in 201..300 -> "Sangat Tidak Sehat"
+            in 301..500 -> "Berbahaya"
+            else -> "Sangat Berbahaya"
+        }
+    }
+
+    private fun getPollutantFullName(type: String?): String {
+        return when (type) {
+            "o3" -> "Ozon"
+            "co" -> "Karbon Monoksida"
+            "no2" -> "Nitrogen Dioksida"
+            "pm10" -> "Materi Partikulat < 10 mikron"
+            "pm2.5" -> "Materi Partikulat < 2.5 mikron"
+            "so2" -> "Sulfur Dioksida"
+            else -> "Tidak Diketahui"
+        }
+    }
 }

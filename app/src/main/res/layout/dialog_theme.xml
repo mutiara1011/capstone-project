@@ -2,18 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="?attr/colorPrimaryVariant">
 
-    <TextView
-        android:id="@+id/dialog_title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pilih Tema"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:paddingBottom="8dp" />
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pilih Tema"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="?attr/colorOnSecondary"/>
+
+        <ImageButton
+            android:id="@+id/close_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/baseline_close_24"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Close"
+            app:tint="?attr/colorOnSecondary" />
+
+    </LinearLayout>
 
     <RadioGroup
         android:id="@+id/theme_group"
@@ -24,13 +45,34 @@
             android:id="@+id/light_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Light Mode" />
+            android:text="Light Mode"
+            android:textColor="?attr/colorOnSecondary"/>
 
         <RadioButton
             android:id="@+id/dark_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Dark Mode" />
+            android:text="Dark Mode"
+            android:textColor="?attr/colorOnSecondary"/>
 
     </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:paddingTop="5dp">
+
+        <Button
+            android:id="@+id/ok_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/colorPrimaryFixed"
+            android:text="OK"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:textColor="?attr/colorOnSecondary" />
+    </LinearLayout>
+
 </LinearLayout>
