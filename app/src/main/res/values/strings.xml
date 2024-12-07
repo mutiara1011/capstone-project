@@ -19,4 +19,11 @@
     <string name="not_availabe">Tidak tersedia.</string>
     <string name="not_available">Not Available</string>
     <string name="pollutant">Polutan Utama: %1$s (%2$s)</string>
+    <string name="index">53</string>
+    <string name="description">Description</string>
+    <string name="pollutant_type">Pollutant Type</string>
+    <string name="activity_recommendations">Activity Recommendations</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="air_quality_index">Air Quality Index</string>
+    <string name="concentration">31,56 μg/m³</string>
 </resources>

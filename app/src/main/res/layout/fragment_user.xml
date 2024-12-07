@@ -29,63 +29,56 @@
                 android:background="?attr/colorPrimaryVariant">
 
                 <TextView
-                    android:id="@+id/aqi_1"
+                    android:id="@+id/quality_index"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/colorOnSecondary"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Kualitas Udara" />
+                    tools:text="Quality Index" />
+
 
                 <TextView
                     android:id="@+id/aqi_index"
                     android:layout_width="0dp"
-                    android:layout_height="59dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:paddingStart="9dp"
                     android:paddingEnd="9dp"
-                    android:gravity="center"
-                    android:ellipsize="none"
-                    android:singleLine="false"
-                    android:text="53"
+                    android:text="@string/index"
                     android:textColor="?attr/colorOnSecondary"
                     android:textSize="45sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/aqi_1" />
-
+                    app:layout_constraintTop_toBottomOf="@id/quality_index" />
 
                 <TextView
-                    android:id="@+id/description_1"
+                    android:id="@+id/description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
                     android:layout_toEndOf="@id/aqi_index"
-                    android:textColor="#ffffff"
+                    android:textColor="?attr/colorOnSecondary"
                     android:textSize="15sp"
                     android:textStyle="bold"
-                    android:ellipsize="none"
-                    android:singleLine="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/aqi_index"
-                    app:layout_constraintTop_toTopOf="@+id/aqi_index"
-                    tools:text="description" />
+                    app:layout_constraintTop_toBottomOf="@+id/quality_index"
+                    tools:text="@string/description" />
 
                 <TextView
-                    android:id="@+id/description_2"
+                    android:id="@+id/pollutant_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/aqi_index"
-                    android:textColor="#ffffff"
+                    android:textColor="?attr/colorOnSecondary"
                     android:textSize="13sp"
-                    android:ellipsize="none"
-                    android:singleLine="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/aqi_index"
-                    app:layout_constraintTop_toBottomOf="@+id/description_1"
-                    tools:text="description" />
+                    app:layout_constraintTop_toBottomOf="@+id/description"
+                    tools:text="@string/pollutant_type" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
@@ -107,22 +100,14 @@
                 android:background="?attr/colorPrimaryVariant">
 
                 <TextView
-                    android:id="@+id/rekomendasi"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/activity_recommendations"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Rekomendasi"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#FFFFFF" />
-
-                <TextView
-                    android:id="@+id/deskripsi_rekomendasi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="This is the content inside the first CardView."
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp"
-                    android:textColor="#FFFFFF" />
+                    android:text="@string/activity_recommendations"
+                    android:textSize="19sp"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:textColor="?attr/colorOnSecondary" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -144,22 +129,20 @@
                 android:background="?attr/colorPrimaryVariant">
 
                 <TextView
-                    android:id="@+id/rekomendasi2"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/recommendations"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Rekomendasi"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="#FFFFFF" />
+                    android:text="@string/recommendations"
+                    android:textSize="19sp"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorOnSecondary" />
 
-                <TextView
-                    android:id="@+id/deskripsi_rekomendasi2"
-                    android:layout_width="wrap_content"
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPagerRecommendations"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="This is the content inside the first CardView."
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dp"
-                    android:textColor="#FFFFFF" />
+                    android:orientation="horizontal"/>
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -167,36 +150,39 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="10dp"
+            android:layout_margin="6dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/colorPrimaryVariant"
                 android:orientation="vertical"
-                android:padding="16dp"
-                android:background="?attr/colorPrimaryVariant">
+                android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/aqi_2"
+                    android:id="@+id/text_aqi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
-                    tools:text="Indeks Kualitas Udara" />
+                    android:textColor="?attr/colorOnSecondary"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="@string/air_quality_index" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_pollutants"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/text_aqi"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     tools:listitem="@layout/item_pollutant_section" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
