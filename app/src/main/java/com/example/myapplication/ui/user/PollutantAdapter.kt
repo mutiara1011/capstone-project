@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.user
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,8 @@ class PollutantAdapter(private val pollutants: List<PollutantData>) :
     override fun onBindViewHolder(holder: PollutantViewHolder, position: Int) {
         val pollutant = pollutants[position]
         holder.bind(pollutant)
+        Log.d("PollutantAdapter", "Item at position $position: $pollutant")
+
     }
 
     override fun getItemCount(): Int = pollutants.size
@@ -26,7 +29,7 @@ class PollutantAdapter(private val pollutants: List<PollutantData>) :
         fun bind(pollutant: PollutantData) {
             binding.textIndex.text = pollutant.index
             binding.textDescription.text = pollutant.description
-            binding.textDetails.text = pollutant.title
+            binding.textPollutant.text = pollutant.title
             binding.textConcentration.text = pollutant.details
         }
     }
