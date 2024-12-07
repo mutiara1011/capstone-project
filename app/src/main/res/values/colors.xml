@@ -22,4 +22,10 @@
 
     <color name="light_status_bar">#608BC1</color>
 
+    <color name="good_air_quality">#E8F5E9</color>
+    <color name="moderate_air_quality">#FCF596</color>
+    <color name="unhealthy_for_sensitive_groups">#FBD288</color>
+    <color name="unhealthy_air_quality">#FF9C73</color>
+    <color name="very_unhealthy_air_quality">#FF4545</color>
+    <color name="hazardous_air_quality">#AE445A</color>
 </resources>

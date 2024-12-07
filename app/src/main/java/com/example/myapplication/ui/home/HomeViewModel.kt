@@ -6,8 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.remote.response.AqiDetailResponse
+import com.example.myapplication.data.remote.response.AqiPredictResponse
 import com.example.myapplication.data.remote.response.AqiResponse
 import com.example.myapplication.data.remote.response.Data
+import com.example.myapplication.data.remote.response.DataItem
 import com.example.myapplication.data.remote.retrofit.ApiConfig
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -40,9 +42,13 @@ class HomeViewModel : ViewModel() {
     private val _aqiDescription = MutableLiveData<String?>()
     val aqiDescription: LiveData<String?> = _aqiDescription
 
+    private val _aqiPredict = MutableLiveData<List<DataItem>>()
+    val aqiPredict: LiveData<List<DataItem>> = _aqiPredict
+
     init {
         getWeather()
         fetchPollutants()
+        getPredict()
     }
 
     private fun fetchPollutants() {
@@ -75,8 +81,6 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-
-
     private fun getAQIDescription(aqiIndex: Int): String {
         return when (aqiIndex) {
             in 0..50 -> "Baik"
@@ -103,10 +107,39 @@ class HomeViewModel : ViewModel() {
                     Log.e("HomeViewModel", "Error: ${response.errorBody()}")
                 }
             }
-
             override fun onFailure(call: Call<AqiResponse>, t: Throwable) {
                 Log.e("HomeViewModel", "Error fetching data", t)
             }
         })
     }
+
+    fun getPredict() {
+        val client = ApiConfig.getApiService.getAQIPredict()
+        client.enqueue(object : Callback<AqiPredictResponse> {
+            override fun onResponse(
+                call: Call<AqiPredictResponse>,
+                response: Response<AqiPredictResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("HomeViewModel", "API Response: ${response.body()}")
+                    // Menghapus null pada data dan detail
+                    val data = response.body()?.data?.filterNotNull()?.mapNotNull { dataItem ->
+                        if (dataItem.time.isNullOrEmpty() || dataItem.mainPolutant == null) null
+                        else dataItem.copy(
+                            detail = dataItem.detail?.filterNotNull()
+                        )
+                    } ?: emptyList()
+
+                    Log.d("HomeViewModel", "Data Predict: $data")
+                    _aqiPredict.value = data
+                } else {
+                    Log.e("HomeViewModel", "Error: ${response.errorBody()}")
+                }
+            }
+            override fun onFailure(call: Call<AqiPredictResponse>, t: Throwable) {
+                Log.e("HomeViewModel", "Error fetching data", t)
+            }
+        })
+    }
+
 }
