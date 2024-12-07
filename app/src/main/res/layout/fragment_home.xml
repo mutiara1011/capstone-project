@@ -274,28 +274,13 @@
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/predict_hour"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:listitem="@layout/item_hour" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
+                android:text="Prediksi Per Jam"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:padding="16dp" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
