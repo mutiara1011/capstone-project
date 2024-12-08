@@ -39,6 +39,7 @@ android {
     }
 }
 
+
 dependencies {
     implementation(libs.glide)
 
@@ -61,6 +62,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(libs.androidx.viewpager2)
-
+    implementation(libs.mpandroidchart)
 
 }

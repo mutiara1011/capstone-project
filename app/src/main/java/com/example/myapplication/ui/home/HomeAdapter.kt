@@ -26,12 +26,12 @@ class HomeAdapter : ListAdapter<DataItem, HomeAdapter.MyViewHolder>(DIFF_CALLBAC
 
         private fun getCardColor(aqiIndex: Int): Int {
             return when (aqiIndex) {
-                in 0..50 -> android.graphics.Color.parseColor("#8DC63F") // Green
-                in 51..100 -> android.graphics.Color.parseColor("#FFC107") // Yellow
-                in 101..150 -> android.graphics.Color.parseColor("#F09319") // Orange
-                in 151..200 -> android.graphics.Color.parseColor("#FF4C4C") // Red
-                in 201..300 -> android.graphics.Color.parseColor("#AB47BC") // Dark Red
-                else -> android.graphics.Color.parseColor("#8D6E63") // Darker Red
+                in 0..50 -> android.graphics.Color.parseColor("#77C9B3") // Hijau mint soft
+                in 51..100 -> android.graphics.Color.parseColor("#FFCC80") // Kuning peach soft
+                in 101..150 -> android.graphics.Color.parseColor("#FFAB9D") // Oranye salmon soft
+                in 151..200 -> android.graphics.Color.parseColor("#F58D91") // Merah muda soft
+                in 201..300 -> android.graphics.Color.parseColor("#C59DD9") // Ungu lilac soft
+                else -> android.graphics.Color.parseColor("#B1B1B1") // Abu-abu soft
             }
         }
 
