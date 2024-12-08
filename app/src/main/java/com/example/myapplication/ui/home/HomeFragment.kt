@@ -6,15 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.data.remote.response.DataItem
-import com.example.myapplication.data.remote.response.MainPolutant
 import com.example.myapplication.databinding.FragmentHomeBinding
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 
 class HomeFragment : Fragment() {
 
@@ -22,6 +26,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var adapter: HomeAdapter
+    private lateinit var lineChart: LineChart
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,13 +35,72 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-
         observePollutants()
-
         observeWeatherData()
+
+        lineChart = binding.lineChart
+        setupLineChart()
 
         return binding.root
     }
+
+    private fun setupLineChart() {
+        val entries = ArrayList<Entry>()
+
+        // Data dummy untuk chart
+        entries.apply {
+            add(Entry(0f, 10f))
+            add(Entry(1f, 15f))
+            add(Entry(2f, 7f))
+            add(Entry(3f, 20f))
+            add(Entry(4f, 16f))
+            add(Entry(5f, 25f))
+            add(Entry(6f, 10f))
+        }
+
+        val dataSet = LineDataSet(entries, "AQI Forecast").apply {
+            color = ContextCompat.getColor(requireContext(), R.color.teal_200)
+            setCircleColor(ContextCompat.getColor(requireContext(), R.color.teal_200))
+            lineWidth = 3f
+            setDrawValues(false)
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            setDrawFilled(true)
+            fillColor = ContextCompat.getColor(requireContext(), R.color.teal_200)
+        }
+
+        val lineData = LineData(dataSet)
+        lineChart.data = lineData
+
+        // Konfigurasi X-Axis
+        lineChart.xAxis.apply {
+            position = XAxis.XAxisPosition.BOTTOM
+            granularity = 1f
+            setDrawLabels(true)
+            valueFormatter = IndexAxisValueFormatter(listOf("Today", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon"))
+            labelRotationAngle = 0f
+        }
+
+        // Nonaktifkan sumbu kanan
+        lineChart.axisRight.isEnabled = false
+        lineChart.axisLeft.isEnabled = true
+
+        // Aktifkan fitur chart
+        lineChart.setTouchEnabled(true)
+        lineChart.setPinchZoom(true)
+        lineChart.description.text = "Weekly AQI Forecast"
+
+        // Tambahkan animasi
+        lineChart.animateX(1500, Easing.EaseInOutQuad)
+
+        // Tambahkan MarkerView
+        val markerView = CustomMarkerView(requireContext(), R.layout.marker_view)
+        lineChart.marker = markerView
+
+        // Refresh chart
+        lineChart.invalidate()
+    }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
