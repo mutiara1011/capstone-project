@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -23,6 +24,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.google.android.material.snackbar.Snackbar
 import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
@@ -48,8 +50,42 @@ class HomeFragment : Fragment() {
         lineChart = binding.lineChart
         setupLineChart()
 
+        binding.textAqi.setOnClickListener { navigateToUserFragment() }
+        binding.aqi.setOnClickListener { navigateToUserFragment() }
+        binding.textDescription.setOnClickListener { navigateToUserFragment() }
+
         return binding.root
     }
+
+    private fun observeLoadingState() {
+        homeViewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun observeErrorState() {
+        homeViewModel.errorState.observe(viewLifecycleOwner) { errorMessage ->
+            if (!errorMessage.isNullOrEmpty()) {
+                Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_LONG)
+                    .setAction("Retry") {
+                        homeViewModel.fetchData() // Panggil ulang data
+                    }
+                    .show()
+            }
+        }
+    }
+
+
+    private fun navigateToUserFragment() {
+        findNavController().navigate(
+            R.id.action_homeFragment_to_userFragment,
+            null,
+            androidx.navigation.NavOptions.Builder()
+                .setPopUpTo(R.id.navigation_home, true) // Hapus HomeFragment dari back stack
+                .build()
+        )
+    }
+
 
     private fun scheduleAqiNotificationWorker() {
         // Menjadwalkan Worker untuk berjalan setiap jam
@@ -124,6 +160,11 @@ class HomeFragment : Fragment() {
             setDisplayUseLogoEnabled(true)
         }
 
+        observeLoadingState()
+        observeErrorState()
+
+        homeViewModel.fetchData()
+
         homeViewModel.time.observe(viewLifecycleOwner) { currentTime ->
             binding.textTime.text = currentTime
         }
@@ -135,12 +176,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun observePollutants() {
-        binding.progressTextAqi.visibility = View.VISIBLE
         homeViewModel.aqiIndeks.observe(viewLifecycleOwner) { aqiIndex ->
             if (aqiIndex != null) {
                 binding.textAqi.text = "$aqiIndex"
+                binding.aqi.text = "AQI"
 
-                // Simpan AQI di SharedPreferences
                 val sharedPreferences = requireContext().getSharedPreferences("AQIData", Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
                 editor.putInt("aqi_index", aqiIndex) // Simpan AQI
@@ -148,16 +188,13 @@ class HomeFragment : Fragment() {
             } else {
                 binding.textAqi.text = getString(R.string.aqi_not_available)
             }
-            binding.progressTextAqi.visibility = View.GONE
         }
-        binding.progressTextDescription.visibility = View.VISIBLE
         homeViewModel.aqiDescription.observe(viewLifecycleOwner) { description ->
             if (!description.isNullOrEmpty()) {
                 binding.textDescription.text = description
             } else {
                 binding.textDescription.text = "-"
             }
-            binding.progressTextDescription.visibility = View.GONE
         }
     }
 
@@ -167,10 +204,6 @@ class HomeFragment : Fragment() {
         homeViewModel.date.observe(viewLifecycleOwner) { binding.textDate.text = it }
         homeViewModel.time.observe(viewLifecycleOwner) { binding.textTime.text = it }
 
-        binding.progressTvDegree.visibility = View.VISIBLE
-        binding.progressIvWeatherIcon.visibility = View.VISIBLE
-        binding.progressTvWindSpeed.visibility = View.VISIBLE
-        binding.progressTvHumidity.visibility = View.VISIBLE
         homeViewModel.aqi.observe(viewLifecycleOwner) { data ->
             if (data != null) {
                 binding.tvDegree.text = getString(R.string.degree_format, data.degree ?: "N/A")
@@ -181,10 +214,6 @@ class HomeFragment : Fragment() {
             } else {
                 resetWeatherUI()
             }
-            binding.progressTvDegree.visibility = View.GONE
-            binding.progressIvWeatherIcon.visibility = View.GONE
-            binding.progressTvWindSpeed.visibility = View.GONE
-            binding.progressTvHumidity.visibility = View.GONE
         }
     }
 
@@ -212,7 +241,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        binding.progressRecyclerViewHour.visibility = View.VISIBLE
         adapter = HomeAdapter()
         binding.recyclerViewHour.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -224,9 +252,7 @@ class HomeFragment : Fragment() {
         homeViewModel.aqiPredict.observe(viewLifecycleOwner) { aqiPredict ->
             if (aqiPredict != null) {
                 binding.recyclerViewHour.adapter = adapter
-                binding.progressRecyclerViewHour.visibility = View.GONE
             } else {
-                binding.progressRecyclerViewHour.visibility = View.GONE
                 Toast.makeText(context, "Data not available", Toast.LENGTH_SHORT).show()
             }
         }

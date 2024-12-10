@@ -24,7 +24,7 @@ class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(conte
     }
 
     override fun getOffsetForDrawingAtPoint(xpos: Float, ypos: Float): MPPointF {
-        return MPPointF(-width / 2f, -height - 10f) // Sesuaikan posisi marker
+        return MPPointF(-width / 2f, -height - 10f)
     }
 }
 

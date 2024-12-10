@@ -19,19 +19,18 @@ class HomeAdapter : ListAdapter<DataItem, HomeAdapter.MyViewHolder>(DIFF_CALLBAC
             val aqiIndex = dataItem.mainPolutant?.aqiIndex ?: 0
             binding.indexPredict.text = aqiIndex.toString()
 
-            // Mengubah warna CardView berdasarkan AQI Index
             binding.root.setCardBackgroundColor(getCardColor(aqiIndex))
             binding.details.text = dataItem.mainPolutant?.aqiIndex?.let { getAQIDescription(it) } ?: "Data tidak tersedia"
         }
 
         private fun getCardColor(aqiIndex: Int): Int {
             return when (aqiIndex) {
-                in 0..50 -> android.graphics.Color.parseColor("#77C9B3") // Hijau mint soft
-                in 51..100 -> android.graphics.Color.parseColor("#FFCC80") // Kuning peach soft
-                in 101..150 -> android.graphics.Color.parseColor("#FFAB9D") // Oranye salmon soft
-                in 151..200 -> android.graphics.Color.parseColor("#F58D91") // Merah muda soft
-                in 201..300 -> android.graphics.Color.parseColor("#C59DD9") // Ungu lilac soft
-                else -> android.graphics.Color.parseColor("#B1B1B1") // Abu-abu soft
+                in 0..50 -> android.graphics.Color.parseColor("#77C9B3")
+                in 51..100 -> android.graphics.Color.parseColor("#FFCC80")
+                in 101..150 -> android.graphics.Color.parseColor("#FFAB9D")
+                in 151..200 -> android.graphics.Color.parseColor("#F58D91")
+                in 201..300 -> android.graphics.Color.parseColor("#C59DD9")
+                else -> android.graphics.Color.parseColor("#B1B1B1")
             }
         }
 

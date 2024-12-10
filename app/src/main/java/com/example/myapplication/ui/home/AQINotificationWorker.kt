@@ -16,17 +16,16 @@ class AQINotificationWorker(
 ) : Worker(context, workerParams) {
 
     override fun doWork(): Result {
-        val aqiIndex = getAQI() // Ambil AQI yang disimpan
-        if (aqiIndex >= 40) {
-            sendAqiAlertNotification(aqiIndex) // Kirim notifikasi jika AQI lebih dari 40
+        val aqiIndex = getAQI()
+        if (aqiIndex >= 150) {
+            sendAqiAlertNotification(aqiIndex)
         }
         return Result.success()
     }
 
     private fun getAQI(): Int {
-        // Ambil AQI yang sudah disimpan dalam SharedPreferences atau Database
         val sharedPreferences = applicationContext.getSharedPreferences("AQIData", Context.MODE_PRIVATE)
-        return sharedPreferences.getInt("aqi_index", 0) // Mengambil AQI yang disimpan
+        return sharedPreferences.getInt("aqi_index", 0)
     }
 
     private fun sendAqiAlertNotification(aqiIndex: Int) {
@@ -34,12 +33,12 @@ class AQINotificationWorker(
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // Membuat channel untuk notifikasi di Android 8.0 ke atas
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
-                "aqi_alert_channel", // ID channel
-                "AQI Alert", // Nama channel
-                NotificationManager.IMPORTANCE_HIGH // Prioritas channel
+                "aqi_alert_channel",
+                "AQI Alert",
+                NotificationManager.IMPORTANCE_HIGH
             ).apply {
                 description = "Channel for AQI alerts"
             }
@@ -48,13 +47,13 @@ class AQINotificationWorker(
 
         val soundUri = Uri.parse("android.resource://${context.packageName}/raw/alert")
         val notification = NotificationCompat.Builder(context, "aqi_alert_channel")
-            .setSmallIcon(R.drawable.ic_warning) // Ganti dengan ikon yang sesuai
+            .setSmallIcon(R.drawable.ic_warning)
             .setContentTitle("Warning: High AQI!")
             .setContentText("Current AQI: $aqiIndex. Please take precautions.")
             .setSound(soundUri)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setDefaults(NotificationCompat.DEFAULT_ALL) // Bunyi, getar, dan lampu
-            .setAutoCancel(true) // Menghilangkan notifikasi setelah ditekan
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setAutoCancel(true)
             .build()
 
         notificationManager.notify(1, notification)
