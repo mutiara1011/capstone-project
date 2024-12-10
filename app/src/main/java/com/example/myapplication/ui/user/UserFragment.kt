@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentUserBinding
+import com.google.android.material.snackbar.Snackbar
 
 class UserFragment : Fragment() {
 
     private var _binding: FragmentUserBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     private lateinit var userViewModel: UserViewModel
     private lateinit var pollutantAdapter: PollutantAdapter
@@ -32,8 +33,14 @@ class UserFragment : Fragment() {
 
         _binding = FragmentUserBinding.inflate(inflater, container, false)
 
+        observeLoadingState()
+        observeErrorState()
+
+        userViewModel.fetchData()
+        userViewModel.fetchPollutants()
+
         pollutantAdapter = PollutantAdapter(listOf())
-        binding.recyclerPollutants.apply {
+        binding?.recyclerPollutants?.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = pollutantAdapter
         }
@@ -42,30 +49,51 @@ class UserFragment : Fragment() {
 
         userViewModel.fetchPollutants()
 
-        return binding.root
+        return binding?.root!!
+    }
+
+    private fun observeLoadingState() {
+        userViewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
+            binding?.progressBar?.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+    }
+
+    private fun observeErrorState() {
+        userViewModel.errorState.observe(viewLifecycleOwner) { errorMessage ->
+            if (!errorMessage.isNullOrEmpty()) {
+                Snackbar.make(binding?.root ?: return@observe, errorMessage, Snackbar.LENGTH_LONG)
+                    .setAction("Retry") {
+                        // Retry fetch data jika ada error
+                        userViewModel.fetchData()
+                        userViewModel.fetchPollutants()
+                    }
+                    .show()
+            }
+        }
     }
 
     private fun observeViewModel() {
         userViewModel.apply {
-            qualityIndex.observe(viewLifecycleOwner) { binding.qualityIndex.text = it }
-            textAqi.observe(viewLifecycleOwner) { binding.textAqi.text = it }
+            qualityIndex.observe(viewLifecycleOwner) { binding?.qualityIndex?.text = it }
+            textAqi.observe(viewLifecycleOwner) { binding?.textAqi?.text = it }
 
             aqiIndex.observe(viewLifecycleOwner) { aqi ->
                 aqi?.let {
                     val (activityRecommendations, recommendations, description) = userViewModel.getAQIRecommendation(aqi)
-                    binding.activityRecommendations.text = activityRecommendations
-                    binding.recommendations.text = recommendations
-                    setupViewPager(description.split("\n").filter { it.isNotBlank() })
-                }
+                    binding?.activityRecommendations?.text = activityRecommendations
+                    binding?.recommendations?.text = recommendations
+                    if (_binding != null && description.isNotEmpty()) {
+                        setupViewPager(description.split("\n").filter { it.isNotBlank() })
+                    }                }
             }
 
             pollutants.observe(viewLifecycleOwner) { pollutants ->
                 pollutantAdapter = PollutantAdapter(pollutants)
-                binding.recyclerPollutants.adapter = pollutantAdapter
+                binding?.recyclerPollutants?.adapter = pollutantAdapter
                 pollutants.maxByOrNull { it.index.toIntOrNull() ?: 0 }?.let { highestPollutant ->
-                    binding.aqiIndex.text = highestPollutant.index
-                    binding.description.text = highestPollutant.description
-                    binding.pollutantType.text = getString(
+                    binding?.aqiIndex?.text = highestPollutant.index
+                    binding?.description?.text = highestPollutant.description
+                    binding?.pollutantType?.text = getString(
                         R.string.pollutant,
                         highestPollutant.title,
                         highestPollutant.details
@@ -76,21 +104,26 @@ class UserFragment : Fragment() {
     }
 
     private fun setupViewPager(recommendations: List<String>) {
+
+        if (_binding == null) return
+
         recommendationAdapter = RecommendationAdapter(recommendations)
-        binding.viewPagerRecommendations.adapter = recommendationAdapter
+        binding?.viewPagerRecommendations?.adapter = recommendationAdapter
 
         autoScrollHandler = Handler(Looper.getMainLooper())
         autoScrollRunnable = object : Runnable {
             override fun run() {
-                val currentItem = binding.viewPagerRecommendations.currentItem
-                val nextItem = (currentItem + 1) % recommendationAdapter.itemCount
-                binding.viewPagerRecommendations.setCurrentItem(nextItem, true)
+                val currentItem = binding?.viewPagerRecommendations?.currentItem
+                val nextItem = (currentItem?.plus(1))?.rem(recommendationAdapter.itemCount)
+                if (nextItem != null) {
+                    binding?.viewPagerRecommendations?.setCurrentItem(nextItem, true)
+                }
                 autoScrollHandler?.postDelayed(this, 3000)
             }
         }
         autoScrollHandler?.postDelayed(autoScrollRunnable!!, 3000)
 
-        binding.viewPagerRecommendations.registerOnPageChangeCallback(object :
+        binding?.viewPagerRecommendations?.registerOnPageChangeCallback(object :
             ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 autoScrollHandler?.removeCallbacks(autoScrollRunnable!!)
@@ -101,8 +134,8 @@ class UserFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
         autoScrollHandler?.removeCallbacks(autoScrollRunnable!!)
         autoScrollHandler = null
+        _binding = null
     }
 }

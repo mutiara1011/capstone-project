@@ -39,8 +39,29 @@ class UserViewModel : ViewModel() {
     private val _description = MutableLiveData<String>()
     val description: LiveData<String> = _description
 
+    private val _loadingState = MutableLiveData<Boolean>()
+    val loadingState: LiveData<Boolean> = _loadingState
+
+    private val _errorState = MutableLiveData<String?>()
+    val errorState: LiveData<String?> = _errorState
+
+    fun fetchData() {
+        _loadingState.value = true
+        _errorState.value = null // Reset error state
+        viewModelScope.launch {
+            try {
+                _loadingState.value = false
+            } catch (e: Exception) {
+                _loadingState.value = false
+                _errorState.value = e.localizedMessage ?: "Unknown error occurred"
+            }
+        }
+    }
+
 
     fun fetchPollutants() {
+        _loadingState.postValue(true)
+        _errorState.postValue(null)
         viewModelScope.launch {
             ApiConfig.getApiService.getAQIDetail().enqueue(object : Callback<AqiDetailResponse> {
                 override fun onResponse(call: Call<AqiDetailResponse>, response: Response<AqiDetailResponse>) {
@@ -60,14 +81,15 @@ class UserViewModel : ViewModel() {
 
                         _pollutants.postValue(pollutantsList)
                         updateRecommendation(pollutantsList)
+                        _loadingState.postValue(false)
                     }else {
-                        Log.e("UserViewModel", "API Error: ${response.errorBody()?.string()}")
+                        _errorState.postValue("Gagal mengambil data: ${response.message()}")
                     }
                 }
 
                 override fun onFailure(call: Call<AqiDetailResponse>, t: Throwable) {
-                    Log.e("UserViewModel", "Error fetching data", t)
-                }
+                    _loadingState.postValue(false) // Selesai loading
+                    _errorState.postValue("Error jaringan: ${t.localizedMessage}")                }
             })
         }
     }
