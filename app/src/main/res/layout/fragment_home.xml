@@ -14,6 +14,13 @@
         android:padding="10dp"
         tools:background="#1F509A">
 
+        <ProgressBar
+            android:id="@+id/progress_text_aqi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/text_aqi"
             android:layout_width="match_parent"
@@ -30,6 +37,13 @@
             android:textSize="50sp"
             android:textStyle="bold"
             tools:text="Kualitas Udara" />
+
+        <ProgressBar
+            android:id="@+id/progress_text_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/text_description"
@@ -118,6 +132,7 @@
                 tools:ignore="UselessParent">
 
                 <!-- Temperatur -->
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -127,6 +142,13 @@
                     app:cardBackgroundColor="?attr/colorPrimaryVariant"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="4dp">
+
+                    <ProgressBar
+                        android:id="@+id/progress_tvDegree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -168,6 +190,13 @@
                     app:cardCornerRadius="8dp"
                     app:cardElevation="4dp">
 
+                    <ProgressBar
+                        android:id="@+id/progress_ivWeatherIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
                     <ImageView
                         android:id="@+id/ivWeatherIcon"
                         android:layout_width="150dp"
@@ -188,6 +217,13 @@
                     app:cardBackgroundColor="?attr/colorPrimaryVariant"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="4dp">
+
+                    <ProgressBar
+                        android:id="@+id/progress_tvWindSpeed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -238,6 +274,13 @@
                     app:cardCornerRadius="8dp"
                     app:cardElevation="4dp">
 
+                    <ProgressBar
+                        android:id="@+id/progress_tvHumidity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -278,7 +321,6 @@
             </GridLayout>
         </FrameLayout>
 
-
         <androidx.cardview.widget.CardView
             android:id="@+id/firstCard"
             android:layout_width="match_parent"
@@ -296,65 +338,85 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- RecyclerView -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewHour"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp" />
 
+                <ProgressBar
+                    android:id="@+id/progress_recyclerViewHour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Baik"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textStyle="bold" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="10dp"
                     android:orientation="horizontal"
-                    android:layout_margin="6dp">
+                    android:layout_margin="8dp">
 
-                    <!-- Warna 1 -->
                     <View
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:background="#77C9B3" /> <!-- Hijau -->
 
-                    <!-- Warna 2 -->
                     <View
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:background="#FFCC80" /> <!-- Kuning -->
 
-                    <!-- Warna 3 -->
                     <View
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:background="#FFAB9D" /> <!-- Jingga -->
 
-                    <!-- Warna 4 -->
                     <View
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:background="#F58D91" /> <!-- Merah -->
 
-                    <!-- Warna 5 -->
                     <View
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:background="#C59DD9" /> <!-- Ungu -->
 
-                    <!-- Warna 6 -->
                     <View
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:background="#B1B1B1" /> <!-- Coklat Tua -->
 
                 </LinearLayout>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
+                <TextView
+                    android:id="@+id/textEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="8dp"
+                    android:text="Berbahaya"
+                    android:textColor="?attr/colorOnPrimary"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/secondCard"
@@ -382,8 +444,14 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="8dp" />
-            </LinearLayout>
 
+                <ProgressBar
+                    android:id="@+id/progress_lineChart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 

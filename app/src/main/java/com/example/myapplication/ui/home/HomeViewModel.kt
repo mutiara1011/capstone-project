@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.home
 
+import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,9 +29,7 @@ class HomeViewModel : ViewModel() {
     )
     val date: LiveData<String> = _date
 
-    private val _time = MutableLiveData(
-        SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-    )
+    private val _time = MutableLiveData<String>()
     val time: LiveData<String> = _time
 
     private val _aqi = MutableLiveData<Data?>()
@@ -49,6 +48,17 @@ class HomeViewModel : ViewModel() {
         getWeather()
         fetchPollutants()
         getPredict()
+        updateTime()
+    }
+
+    private fun updateTime() {
+        val handler = android.os.Handler(Looper.getMainLooper())
+        handler.post(object : Runnable {
+            override fun run() {
+                _time.value = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+                handler.postDelayed(this, 1000) // Update setiap 1 detik
+            }
+        })
     }
 
     private fun fetchPollutants() {

@@ -1,15 +1,19 @@
 package com.example.myapplication.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.github.mikephil.charting.animation.Easing
@@ -19,6 +23,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
 
@@ -35,6 +40,8 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        scheduleAqiNotificationWorker()
+
         observePollutants()
         observeWeatherData()
 
@@ -42,6 +49,14 @@ class HomeFragment : Fragment() {
         setupLineChart()
 
         return binding.root
+    }
+
+    private fun scheduleAqiNotificationWorker() {
+        // Menjadwalkan Worker untuk berjalan setiap jam
+        val workRequest = PeriodicWorkRequestBuilder<AQINotificationWorker>(1, TimeUnit.HOURS)
+            .build()
+
+        WorkManager.getInstance(requireContext()).enqueue(workRequest)
     }
 
     private fun setupLineChart() {
@@ -100,8 +115,6 @@ class HomeFragment : Fragment() {
         lineChart.invalidate()
     }
 
-
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -110,42 +123,68 @@ class HomeFragment : Fragment() {
             setLogo(R.drawable.logo)
             setDisplayUseLogoEnabled(true)
         }
+
+        homeViewModel.time.observe(viewLifecycleOwner) { currentTime ->
+            binding.textTime.text = currentTime
+        }
+
         setupRecyclerView()
         observePredict()
         homeViewModel.getPredict()
+
     }
 
     private fun observePollutants() {
+        binding.progressTextAqi.visibility = View.VISIBLE
         homeViewModel.aqiIndeks.observe(viewLifecycleOwner) { aqiIndex ->
             if (aqiIndex != null) {
                 binding.textAqi.text = "$aqiIndex"
+
+                // Simpan AQI di SharedPreferences
+                val sharedPreferences = requireContext().getSharedPreferences("AQIData", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putInt("aqi_index", aqiIndex) // Simpan AQI
+                editor.apply()
             } else {
                 binding.textAqi.text = getString(R.string.aqi_not_available)
             }
+            binding.progressTextAqi.visibility = View.GONE
         }
+        binding.progressTextDescription.visibility = View.VISIBLE
         homeViewModel.aqiDescription.observe(viewLifecycleOwner) { description ->
             if (!description.isNullOrEmpty()) {
                 binding.textDescription.text = description
             } else {
                 binding.textDescription.text = "-"
             }
+            binding.progressTextDescription.visibility = View.GONE
         }
     }
+
 
     private fun observeWeatherData() {
         homeViewModel.location.observe(viewLifecycleOwner) { binding.textLocation.text = it }
         homeViewModel.date.observe(viewLifecycleOwner) { binding.textDate.text = it }
         homeViewModel.time.observe(viewLifecycleOwner) { binding.textTime.text = it }
+
+        binding.progressTvDegree.visibility = View.VISIBLE
+        binding.progressIvWeatherIcon.visibility = View.VISIBLE
+        binding.progressTvWindSpeed.visibility = View.VISIBLE
+        binding.progressTvHumidity.visibility = View.VISIBLE
         homeViewModel.aqi.observe(viewLifecycleOwner) { data ->
             if (data != null) {
-                binding.tvDegree.text = "${data.degree}°"
-                binding.tvWindSpeed.text = "${data.wind} km/h"
-                binding.tvHumidity.text = "${data.humidity}%"
+                binding.tvDegree.text = getString(R.string.degree_format, data.degree ?: "N/A")
+                binding.tvWindSpeed.text = getString(R.string.wind_speed_format, data.wind ?: "N/A")
+                binding.tvHumidity.text = getString(R.string.humidity_format, data.humidity ?: "N/A")
                 val iconResource = getWeatherIcon(data.degreeImg ?: "Sunny")
                 binding.ivWeatherIcon.setImageResource(iconResource)
             } else {
                 resetWeatherUI()
             }
+            binding.progressTvDegree.visibility = View.GONE
+            binding.progressIvWeatherIcon.visibility = View.GONE
+            binding.progressTvWindSpeed.visibility = View.GONE
+            binding.progressTvHumidity.visibility = View.GONE
         }
     }
 
@@ -173,6 +212,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+        binding.progressRecyclerViewHour.visibility = View.VISIBLE
         adapter = HomeAdapter()
         binding.recyclerViewHour.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -180,10 +220,17 @@ class HomeFragment : Fragment() {
         }
         Log.d("HomeFragment", "RecyclerView is set up with HomeAdapter")
 
-        binding.recyclerViewHour.adapter = adapter
+
+        homeViewModel.aqiPredict.observe(viewLifecycleOwner) { aqiPredict ->
+            if (aqiPredict != null) {
+                binding.recyclerViewHour.adapter = adapter
+                binding.progressRecyclerViewHour.visibility = View.GONE
+            } else {
+                binding.progressRecyclerViewHour.visibility = View.GONE
+                Toast.makeText(context, "Data not available", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
-
-
 
     private fun observePredict() {
         homeViewModel.aqiPredict.observe(viewLifecycleOwner) { aqiPredict ->
