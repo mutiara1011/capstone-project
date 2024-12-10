@@ -1,11 +1,11 @@
 <resources>
     <string name="app_name">Breezo</string>
-    <string name="title_home">Halaman Utama</string>
+    <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifikasi</string>
-    <string name="title_profile">Profil</string>
-    <string name="title_user">Rekomendasi</string>
-    <string name="title_settings">Pengaturan</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_user">Recommendation</string>
+    <string name="title_settings">Settings</string>
     <string name="location">JAKARTA</string>
     <string name="date">Sabtu, 2 November</string>
     <string name="hour">05.00</string>
@@ -19,13 +19,13 @@
     <string name="wind_speed">Kecepatan Angin</string>
     <string name="humidity">Kelembapan</string>
     <string name="aqi_not_available">Tidak ada data AQI.</string>
-    <string name="not_available">Tidak tersedia</string>
+    <string name="not_available">Tidak tersedia.</string>
     <string name="pollutant">Polutan Utama: %1$s (%2$s)</string>
     <string name="index">53</string>
-    <string name="description">Deskripsi</string>
-    <string name="pollutant_type">Tipe polutan</string>
-    <string name="activity_recommendations">Rekomendasi aktivitas</string>
-    <string name="recommendations">Rekomendasi</string>
-    <string name="air_quality_index">Indeks Kualitas Udara</string>
+    <string name="description">Description</string>
+    <string name="pollutant_type">Pollutant Type</string>
+    <string name="activity_recommendations">Activity Recommendations</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="air_quality_index">Air Quality Index</string>
     <string name="concentration">31,56 μg/m³</string>
 </resources>
