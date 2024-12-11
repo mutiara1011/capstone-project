@@ -1,9 +1,11 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -24,9 +26,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         // Setup NavController untuk navigasi antar fragment
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
         val appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.navigation_home, R.id.navigation_user, R.id.navigation_settings, R.id.navigation_profile)
+            setOf(R.id.homeFragment, R.id.userFragment, R.id.settingsFragment, R.id.profileFragment)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
@@ -34,15 +37,25 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
         navView.setupWithNavController(navController)
 
-        // Mengganti toolbar dengan logo saat berada di HomeFragment
+        // Sembunyikan toolbar dan bottom navigation saat di WelcomeFragment
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.navigation_home) {
-                supportActionBar?.setDisplayShowTitleEnabled(false)
-                supportActionBar?.setLogo(R.drawable.logo)  // Ganti dengan logo Anda
+            if (destination.id == R.id.welcomeFragment) {
+                // Sembunyikan toolbar dan bottom navigation di WelcomeFragment
+                supportActionBar?.hide()
+                binding.navView.visibility = View.GONE
             } else {
-                supportActionBar?.setDisplayShowTitleEnabled(false)
-                supportActionBar?.setLogo(null)  // Menghilangkan logo
-                supportActionBar?.title = destination.label  // Atur judul sesuai label
+                // Tampilkan toolbar dan bottom navigation setelah login
+                supportActionBar?.show()
+                binding.navView.visibility = View.VISIBLE
+
+                if (destination.id == R.id.homeFragment) {
+                    supportActionBar?.setDisplayShowTitleEnabled(false)
+                    supportActionBar?.setLogo(R.drawable.logo)  // Ganti dengan logo Anda
+                } else {
+                    supportActionBar?.setDisplayShowTitleEnabled(false)
+                    supportActionBar?.setLogo(null)  // Menghilangkan logo
+                    supportActionBar?.title = destination.label  // Atur judul sesuai label
+                }
             }
         }
     }

@@ -11,11 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.myapplication.R
+import com.example.myapplication.data.remote.response.acc.pref.UserPreference
+import com.example.myapplication.data.remote.response.acc.pref.dataStore
 import com.example.myapplication.databinding.FragmentHomeBinding
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.LineChart
@@ -24,7 +27,9 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class HomeFragment : Fragment() {
@@ -34,6 +39,7 @@ class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var adapter: HomeAdapter
     private lateinit var lineChart: LineChart
+    private lateinit var userPreference: UserPreference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +47,19 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        userPreference = UserPreference.getInstance(requireContext().dataStore)
+
+        // Memeriksa status login pengguna
+        lifecycleScope.launch(Dispatchers.IO) {
+            val user = userPreference.getSession().first()
+            if (!user.isLogin) {
+                // Jika pengguna belum login, arahkan ke WelcomeFragment
+                requireActivity().runOnUiThread {
+                    findNavController().navigate(R.id.action_homeFragment_to_welcomeFragment)
+                }
+            }
+        }
 
         scheduleAqiNotificationWorker()
 
