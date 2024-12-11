@@ -12,6 +12,7 @@ import com.example.myapplication.data.remote.response.AqiResponse
 import com.example.myapplication.data.remote.response.Data
 import com.example.myapplication.data.remote.response.DataItem
 import com.example.myapplication.data.remote.retrofit.ApiConfig
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -44,11 +45,30 @@ class HomeViewModel : ViewModel() {
     private val _aqiPredict = MutableLiveData<List<DataItem>>()
     val aqiPredict: LiveData<List<DataItem>> = _aqiPredict
 
+    private val _loadingState = MutableLiveData<Boolean>()
+    val loadingState: LiveData<Boolean> = _loadingState
+
+    private val _errorState = MutableLiveData<String?>()
+    val errorState: LiveData<String?> = _errorState
+
     init {
         getWeather()
         fetchPollutants()
         getPredict()
         updateTime()
+    }
+
+    fun fetchData() {
+        _loadingState.value = true
+        _errorState.value = null
+        viewModelScope.launch {
+            try {
+                _loadingState.value = false
+            } catch (e: Exception) {
+                _loadingState.value = false
+                _errorState.value = e.localizedMessage ?: "Unknown error occurred"
+            }
+        }
     }
 
     private fun updateTime() {
@@ -62,6 +82,7 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun fetchPollutants() {
+        _loadingState.postValue(true)
         viewModelScope.launch {
             try {
                 val client = ApiConfig.getApiService().getAQIDetail()
@@ -76,17 +97,20 @@ class HomeViewModel : ViewModel() {
                             _aqiDescription.postValue(
                                 mainData?.aqiIndex?.let { getAQIDescription(it) } ?: "Data tidak tersedia"
                             )
+                            _loadingState.postValue(false)
                         } else {
-                            Log.e("HomeViewModel", "API Error: ${response.errorBody()?.string()}")
+                            _errorState.value = "Error: ${response.errorBody()?.string()}"
                         }
                     }
 
                     override fun onFailure(call: Call<AqiDetailResponse>, t: Throwable) {
-                        Log.e("HomeViewModel", "Error fetching data", t)
+                        _loadingState.postValue(false)
+                        _errorState.value = "Failed to fetch pollutants: ${t.localizedMessage}"
                     }
                 })
             } catch (e: Exception) {
-                Log.e("HomeViewModel", "Error fetching data", e)
+                _loadingState.postValue(false)
+                _errorState.value = "Error"
             }
         }
     }
@@ -105,6 +129,7 @@ class HomeViewModel : ViewModel() {
 
     private fun getWeather() {
         val client = ApiConfig.getApiService().getAQI()
+        _loadingState.postValue(true)
         client.enqueue(object : Callback<AqiResponse> {
             override fun onResponse(
                 call: Call<AqiResponse>,
@@ -113,6 +138,7 @@ class HomeViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     Log.d("HomeViewModel", "API Response: ${response.body()}")
                     _aqi.value = response.body()?.data
+                    _loadingState.postValue(false)
                 } else {
                     Log.e("HomeViewModel", "Error: ${response.errorBody()}")
                 }
@@ -125,6 +151,7 @@ class HomeViewModel : ViewModel() {
 
     fun getPredict() {
         val client = ApiConfig.getApiService().getAQIPredict()
+        _loadingState.postValue(true)
         client.enqueue(object : Callback<AqiPredictResponse> {
             override fun onResponse(
                 call: Call<AqiPredictResponse>,
@@ -132,7 +159,6 @@ class HomeViewModel : ViewModel() {
             ) {
                 if (response.isSuccessful) {
                     Log.d("HomeViewModel", "API Response: ${response.body()}")
-                    // Menghapus null pada data dan detail
                     val data = response.body()?.data?.filterNotNull()?.mapNotNull { dataItem ->
                         if (dataItem.time.isNullOrEmpty() || dataItem.mainPolutant == null) null
                         else dataItem.copy(
@@ -142,12 +168,16 @@ class HomeViewModel : ViewModel() {
 
                     Log.d("HomeViewModel", "Data Predict: $data")
                     _aqiPredict.value = data
+                    _loadingState.postValue(false)
+
                 } else {
-                    Log.e("HomeViewModel", "Error: ${response.errorBody()}")
+                    _loadingState.postValue(false)
+                    _errorState.value = "Failed to fetch AQI predictions"
                 }
             }
             override fun onFailure(call: Call<AqiPredictResponse>, t: Throwable) {
-                Log.e("HomeViewModel", "Error fetching data", t)
+                _loadingState.postValue(false)
+                _errorState.value = "Error: ${t.localizedMessage}"
             }
         })
     }
