@@ -71,6 +71,13 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val sharedPreferences = requireContext().getSharedPreferences("AQINotificationPrefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean("isNotificationSent", false).apply()
+    }
+
     private fun observeLoadingState() {
         homeViewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
