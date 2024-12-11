@@ -240,9 +240,8 @@
                             <ImageView
                                 android:id="@+id/ivWeatherIcon"
                                 android:layout_width="150dp"
-                                android:layout_height="150dp"
+                                android:layout_height="120dp"
                                 android:layout_gravity="center"
-                                android:padding="5dp"
                                 android:contentDescription="@string/icon_weather"
                                 android:src="@drawable/mostly_cloudy" />
 
@@ -251,7 +250,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
-                                android:layout_marginTop="2dp"
+                                android:paddingTop="2dp"
                                 android:fontFamily="@font/inria_serif_light"
                                 android:textColor="@color/white"
                                 android:textSize="13sp"

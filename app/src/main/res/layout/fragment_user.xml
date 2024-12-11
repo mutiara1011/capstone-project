@@ -84,15 +84,52 @@
                         app:layout_constraintTop_toBottomOf="@+id/description"
                         tools:text="@string/pollutant_type" />
 
-                    <View
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        android:paddingTop="8dp"
-                        android:background="@drawable/gradient_line"
-                        app:layout_constraintTop_toBottomOf="@id/aqi_index"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_height="10dp"
+                        android:orientation="horizontal"
+                        android:layout_margin="8dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/aqi_index">
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:background="#77C9B3" /> <!-- Hijau -->
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:background="#FFCC80" /> <!-- Kuning -->
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:background="#FFAB9D" /> <!-- Jingga -->
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:background="#F58D91" /> <!-- Merah -->
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:background="#C59DD9" /> <!-- Ungu -->
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.5"
+                            android:background="#B1B1B1" /> <!-- Coklat Tua -->
+
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
