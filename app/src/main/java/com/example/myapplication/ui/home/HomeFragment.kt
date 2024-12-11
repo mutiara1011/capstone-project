@@ -2,7 +2,6 @@ package com.example.myapplication.ui.home
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +26,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -50,14 +50,10 @@ class HomeFragment : Fragment() {
 
         userPreference = UserPreference.getInstance(requireContext().dataStore)
 
-        // Memeriksa status login pengguna
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
             val user = userPreference.getSession().first()
             if (!user.isLogin) {
-                // Jika pengguna belum login, arahkan ke WelcomeFragment
-                requireActivity().runOnUiThread {
-                    findNavController().navigate(R.id.action_homeFragment_to_welcomeFragment)
-                }
+                findNavController().navigate(R.id.action_homeFragment_to_welcomeFragment)
             }
         }
 
@@ -87,27 +83,24 @@ class HomeFragment : Fragment() {
             if (!errorMessage.isNullOrEmpty()) {
                 Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_LONG)
                     .setAction("Retry") {
-                        homeViewModel.fetchData() // Panggil ulang data
+                        homeViewModel.fetchData()
                     }
                     .show()
             }
         }
     }
 
-
     private fun navigateToUserFragment() {
         findNavController().navigate(
             R.id.action_homeFragment_to_userFragment,
             null,
             androidx.navigation.NavOptions.Builder()
-                .setPopUpTo(R.id.navigation_home, true) // Hapus HomeFragment dari back stack
+                .setPopUpTo(R.id.homeFragment, true)
                 .build()
         )
     }
 
-
     private fun scheduleAqiNotificationWorker() {
-        // Menjadwalkan Worker untuk berjalan setiap jam
         val workRequest = PeriodicWorkRequestBuilder<AQINotificationWorker>(1, TimeUnit.HOURS)
             .build()
 
@@ -202,7 +195,7 @@ class HomeFragment : Fragment() {
 
                 val sharedPreferences = requireContext().getSharedPreferences("AQIData", Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
-                editor.putInt("aqi_index", aqiIndex) // Simpan AQI
+                editor.putInt("aqi_index", aqiIndex)
                 editor.apply()
             } else {
                 binding.textAqi.text = getString(R.string.aqi_not_available)
@@ -217,7 +210,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-
     private fun observeWeatherData() {
         homeViewModel.location.observe(viewLifecycleOwner) { binding.textLocation.text = it }
         homeViewModel.date.observe(viewLifecycleOwner) { binding.textDate.text = it }
@@ -228,27 +220,30 @@ class HomeFragment : Fragment() {
                 binding.tvDegree.text = getString(R.string.degree_format, data.degree ?: "N/A")
                 binding.tvWindSpeed.text = getString(R.string.wind_speed_format, data.wind ?: "N/A")
                 binding.tvHumidity.text = getString(R.string.humidity_format, data.humidity ?: "N/A")
-                val iconResource = getWeatherIcon(data.degreeImg ?: "Sunny")
+
+                val weatherCondition = data.degreeImg ?: ""
+                val (iconResource, conditionName) = getWeatherIcon(weatherCondition)
                 binding.ivWeatherIcon.setImageResource(iconResource)
+                binding.tvWeather.text = getString(conditionName)
             } else {
                 resetWeatherUI()
             }
         }
     }
 
-    private fun getWeatherIcon(condition: String): Int {
+    private fun getWeatherIcon(condition: String): Pair<Int, Int> {
         return when (condition) {
-            "Rainy" -> R.drawable.rainy
-            "Stormy" -> R.drawable.stormy
-            "Sunny" -> R.drawable.sunny
-            "Foggy" -> R.drawable.foggy
-            "Cloudy" -> R.drawable.cloudy
-            "Partly Cloudy" -> R.drawable.partly_cloudy
-            "Mostly Cloudy" -> R.drawable.mostly_cloudy
-            "Full Moon" -> R.drawable.full_moon
-            "Partly Cloudy Moon" -> R.drawable.partly_cloudy_moon
-            "Mostly Cloudy Moon" -> R.drawable.mostly_cloudy_moon
-            else -> R.drawable.ic_default_weather
+            "Rainy" -> Pair(R.drawable.rainy, R.string.rainy)
+            "Stormy" -> Pair(R.drawable.stormy, R.string.stormy)
+            "Sunny" -> Pair(R.drawable.sunny, R.string.sunny)
+            "Foggy" -> Pair(R.drawable.foggy, R.string.foggy)
+            "Cloudy" -> Pair(R.drawable.cloudy, R.string.cloudy)
+            "Partly Cloudy" -> Pair(R.drawable.partly_cloudy, R.string.partly_cloudy)
+            "Mostly Cloudy" -> Pair(R.drawable.mostly_cloudy, R.string.mostly_cloudy)
+            "Full Moon" -> Pair(R.drawable.full_moon, R.string.full_moon)
+            "Partly Cloudy Moon" -> Pair(R.drawable.partly_cloudy_moon, R.string.partly_cloudy_moon)
+            "Mostly Cloudy Moon" -> Pair(R.drawable.mostly_cloudy_moon, R.string.mostly_cloudy_moon)
+            else -> Pair(R.drawable.ic_default_weather, R.string.unknown)
         }
     }
 
@@ -265,9 +260,6 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = adapter
         }
-        Log.d("HomeFragment", "RecyclerView is set up with HomeAdapter")
-
-
         homeViewModel.aqiPredict.observe(viewLifecycleOwner) { aqiPredict ->
             if (aqiPredict != null) {
                 binding.recyclerViewHour.adapter = adapter
@@ -280,7 +272,7 @@ class HomeFragment : Fragment() {
     private fun observePredict() {
         homeViewModel.aqiPredict.observe(viewLifecycleOwner) { aqiPredict ->
             if (aqiPredict != null) {
-                adapter.submitList(aqiPredict) // Kirimkan daftar event ke adapter
+                adapter.submitList(aqiPredict)
             }
         }
     }

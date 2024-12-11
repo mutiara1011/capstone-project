@@ -40,18 +40,15 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
 
         userPreference = UserPreference.getInstance(requireContext().dataStore)
 
-        // Periksa status login saat fragment pertama kali dibuka
         lifecycleScope.launch(Dispatchers.IO) {
             val user = userPreference.getSession().first()
             withContext(Dispatchers.Main) {
                 if (user.isLogin) {
-                    // Jika sudah login, langsung ke HomeFragment
                     findNavController().navigate(R.id.action_welcomeFragment_to_homeFragment)
                 }
             }
         }
 
-        // Setup aksi untuk tombol login dan signup
         binding.loginButton.setOnClickListener {
             findNavController().navigate(R.id.action_welcomeFragment_to_loginFragment)
         }
@@ -65,7 +62,6 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
     }
 
     private fun setupView() {
-        // Hides the status bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             requireActivity().window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
@@ -77,7 +73,6 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
     }
 
     private fun playAnimation() {
-        // Play animation (same as in the Activity version)
         ObjectAnimator.ofFloat(binding.imageView, View.TRANSLATION_X, -30f, 30f).apply {
             duration = 6000
             repeatCount = ObjectAnimator.INFINITE

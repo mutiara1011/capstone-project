@@ -20,7 +20,6 @@ import com.example.myapplication.data.remote.response.acc.pref.UserModel
 import com.example.myapplication.data.remote.response.acc.pref.UserPreference
 import com.example.myapplication.data.remote.response.acc.pref.dataStore
 import com.example.myapplication.databinding.FragmentLoginBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION", "SameParameterValue", "NAME_SHADOWING")
@@ -36,9 +35,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentLoginBinding.bind(view)
         userPreference = UserPreference.getInstance(requireContext().dataStore)
-
-        requireActivity().findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)?.visibility = View.GONE
-        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
 
         setupView()
         setupAction()
@@ -132,60 +128,41 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             startDelay = 100
         }
 
-        val emailTextView = ObjectAnimator.ofFloat(binding.usernameTextView, View.TRANSLATION_Y, 100f, 0f).apply {
-            duration = 500
-            startDelay = 150
-        }
-        val emailTextViewScale = ObjectAnimator.ofFloat(binding.usernameTextView, View.SCALE_X, 0.8f, 1f).apply {
+        val nameTextView = ObjectAnimator.ofFloat(binding.nameTextView, View.TRANSLATION_X, -100f, 0f).apply {
             duration = 500
             startDelay = 150
         }
 
-        val emailEditTextLayout = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.TRANSLATION_Y, 100f, 0f).apply {
-            duration = 500
-            startDelay = 200
-        }
-        val emailEditTextLayoutScale = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.SCALE_X, 0.8f, 1f).apply {
+        val nameEditTextLayout = ObjectAnimator.ofFloat(binding.nameEditTextLayout, View.TRANSLATION_X, -100f, 0f).apply {
             duration = 500
             startDelay = 200
         }
 
-        val passwordTextView = ObjectAnimator.ofFloat(binding.passwordTextView, View.TRANSLATION_Y, 100f, 0f).apply {
-            duration = 500
-            startDelay = 250
-        }
-        val passwordTextViewScale = ObjectAnimator.ofFloat(binding.passwordTextView, View.SCALE_X, 0.8f, 1f).apply {
+        val passwordTextView = ObjectAnimator.ofFloat(binding.passwordTextView, View.TRANSLATION_X, -100f, 0f).apply {
             duration = 500
             startDelay = 250
         }
 
-        val passwordEditTextLayout = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.TRANSLATION_Y, 100f, 0f).apply {
-            duration = 500
-            startDelay = 300
-        }
-        val passwordEditTextLayoutScale = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.SCALE_X, 0.8f, 1f).apply {
+        val passwordEditTextLayout = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.TRANSLATION_X, -100f, 0f).apply {
             duration = 500
             startDelay = 300
         }
 
-        val loginButton = ObjectAnimator.ofFloat(binding.loginButton, View.TRANSLATION_Y, 100f, 0f).apply {
+        val loginButton = ObjectAnimator.ofFloat(binding.loginButton, View.TRANSLATION_X, -100f, 0f).apply {
             duration = 500
             startDelay = 350
         }
-        val loginButtonScale = ObjectAnimator.ofFloat(binding.loginButton, View.SCALE_X, 0.8f, 1f).apply {
-            duration = 500
-            startDelay = 350
-        }
+
 
         AnimatorSet().apply {
             playTogether(
                 titleFadeIn,
                 messageFadeIn,
-                emailTextView, emailTextViewScale,
-                emailEditTextLayout, emailEditTextLayoutScale,
-                passwordTextView, passwordTextViewScale,
-                passwordEditTextLayout, passwordEditTextLayoutScale,
-                loginButton, loginButtonScale
+                nameTextView,
+                nameEditTextLayout,
+                passwordTextView,
+                passwordEditTextLayout,
+                loginButton,
             )
             start()
         }
