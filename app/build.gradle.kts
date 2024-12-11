@@ -65,5 +65,6 @@ dependencies {
     implementation(libs.mpandroidchart)
 
     implementation(libs.androidx.work.runtime)
+    implementation(libs.datastore.preferences)
 
 }

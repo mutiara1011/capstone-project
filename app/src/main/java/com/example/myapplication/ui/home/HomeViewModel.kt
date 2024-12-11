@@ -64,7 +64,7 @@ class HomeViewModel : ViewModel() {
     private fun fetchPollutants() {
         viewModelScope.launch {
             try {
-                val client = ApiConfig.getApiService.getAQIDetail()
+                val client = ApiConfig.getApiService().getAQIDetail()
                 client.enqueue(object : Callback<AqiDetailResponse> {
                     override fun onResponse(
                         call: Call<AqiDetailResponse>,
@@ -104,7 +104,7 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun getWeather() {
-        val client = ApiConfig.getApiService.getAQI()
+        val client = ApiConfig.getApiService().getAQI()
         client.enqueue(object : Callback<AqiResponse> {
             override fun onResponse(
                 call: Call<AqiResponse>,
@@ -124,7 +124,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getPredict() {
-        val client = ApiConfig.getApiService.getAQIPredict()
+        val client = ApiConfig.getApiService().getAQIPredict()
         client.enqueue(object : Callback<AqiPredictResponse> {
             override fun onResponse(
                 call: Call<AqiPredictResponse>,

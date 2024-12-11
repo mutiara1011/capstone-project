@@ -42,7 +42,7 @@ class UserViewModel : ViewModel() {
 
     fun fetchPollutants() {
         viewModelScope.launch {
-            ApiConfig.getApiService.getAQIDetail().enqueue(object : Callback<AqiDetailResponse> {
+            ApiConfig.getApiService().getAQIDetail().enqueue(object : Callback<AqiDetailResponse> {
                 override fun onResponse(call: Call<AqiDetailResponse>, response: Response<AqiDetailResponse>) {
                     if (response.isSuccessful) {
                         val details = response.body()?.data?.detail ?: emptyList()

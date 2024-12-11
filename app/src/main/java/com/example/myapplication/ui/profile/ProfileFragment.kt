@@ -4,42 +4,63 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.databinding.FragmentProfileBinding
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.myapplication.R
+import com.example.myapplication.data.remote.response.acc.pref.UserPreference
+import com.example.myapplication.data.remote.response.acc.pref.dataStore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment() {
 
-    private var _binding: FragmentProfileBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var userPreference: UserPreference
+    private lateinit var userNameTextView: TextView
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        val profileViewModel =
-            ViewModelProvider(this)[ProfileViewModel::class.java]
+    ): View? {
+        val binding = inflater.inflate(R.layout.fragment_profile, container, false)
+        userNameTextView = binding.findViewById(R.id.userNameTextView)
 
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        // Inisialisasi UserPreference untuk menyimpan data session
+        userPreference = UserPreference.getInstance(requireContext().dataStore)
 
-        val nameTextView: TextView = binding.textNama
-        profileViewModel.name.observe(viewLifecycleOwner) {
-            nameTextView.text = it
+        // Menampilkan nama pengguna
+        lifecycleScope.launch(Dispatchers.IO) {
+            val user = userPreference.getSession().first()
+            requireActivity().runOnUiThread {
+                userNameTextView.text = "Hello, ${user.username}"  // Menampilkan nama pengguna
+            }
         }
 
-        val joinYearTextView: TextView = binding.textAbout
-        profileViewModel.joinYear.observe(viewLifecycleOwner) {
-            joinYearTextView.text = it
+        // Temukan tombol logout dan atur OnClickListener
+        val logoutButton: Button = binding.findViewById(R.id.logoutButton)
+        logoutButton.setOnClickListener {
+            logout()
         }
 
-        return root
+        return binding
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun logout() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                // Menghapus session di UserPreference
+                userPreference.logout()
+
+                // Setelah logout berhasil, navigasi ke WelcomeFragment
+                requireActivity().runOnUiThread {
+                    findNavController().navigate(R.id.action_profileFragment_to_welcomeFragment)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 }
