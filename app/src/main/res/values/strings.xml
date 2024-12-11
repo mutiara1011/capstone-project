@@ -21,7 +21,7 @@
     <string name="register_success">Pendaftaran berhasil!</string>
     <string name="success_message">Akun dengan %1$s berhasil didaftarkan.</string>
     <string name="ok">ok</string>
-    <string name="name">Nama</string>
+    <string name="name">Nama Pengguna</string>
     <string name="email">Email</string>
     <string name="invalid_email_format">Format email tidak valid</string>
     <string name="password">Password</string>
@@ -36,6 +36,17 @@
     <string name="icon_suhu">Icon Suhu</string>
     <string name="icon_lembap">Icon Kelembapan</string>
     <string name="icon_weather">Icon Weather</string>
+    <string name="rainy">Hujan</string>
+    <string name="stormy">Badai</string>
+    <string name="sunny">Cerah</string>
+    <string name="foggy">Berkabut</string>
+    <string name="cloudy">Berawan</string>
+    <string name="partly_cloudy">Sebagian berawan</string>
+    <string name="mostly_cloudy">Sebagian besar berawan</string>
+    <string name="full_moon">Cerah</string>
+    <string name="partly_cloudy_moon">Sebagian berawan</string>
+    <string name="mostly_cloudy_moon">Sebagian besar berawan</string>
+    <string name="unknown">Tidak diketahui</string>
     <string name="icon_angin">Icon Angin\n</string>
     <string name="wind_speed">Kecepatan Angin</string>
     <string name="humidity">Kelembapan</string>

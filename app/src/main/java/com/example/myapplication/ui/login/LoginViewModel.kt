@@ -31,14 +31,13 @@ class LoginViewModel(
 
                     userPreference.saveSession(userModel)
 
-                    // Panggil callback dengan status sukses
                     callback(true, token, username)
-                } else {
-                    // Jika login gagal, kirimkan pesan error
+                }
+                else {
                     callback(false, null, response.status.message)
                 }
-            } catch (e: Exception) {
-                // Jika ada error lainnya, kirimkan error ke callback
+            }
+            catch (e: Exception) {
                 callback(false, null, e.localizedMessage ?: "An error occurred")
             }
         }

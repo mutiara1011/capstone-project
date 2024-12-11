@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSignupBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SignupFragment : Fragment(R.layout.fragment_signup) {
 
@@ -25,11 +24,6 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentSignupBinding.bind(view)
-
-        requireActivity().findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)?.visibility = View.GONE
-        requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)?.post {
-            requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)?.visibility = View.GONE
-        }
 
         setupView()
         setupAction()
@@ -113,65 +107,37 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
             startDelay = 100
         }
 
-        val nameTextView = ObjectAnimator.ofFloat(binding.nameTextView, View.TRANSLATION_Y, 100f, 0f).apply {
-            duration = 500
-            startDelay = 150
-        }
-        val nameTextViewScale = ObjectAnimator.ofFloat(binding.nameTextView, View.SCALE_X, 0.8f, 1f).apply {
+        val nameTextView = ObjectAnimator.ofFloat(binding.nameTextView, View.TRANSLATION_X, -100f, 0f).apply {
             duration = 500
             startDelay = 150
         }
 
-        val nameEditTextLayout = ObjectAnimator.ofFloat(binding.nameEditTextLayout, View.TRANSLATION_Y, 100f, 0f).apply {
-            duration = 500
-            startDelay = 200
-        }
-        val nameEditTextLayoutScale = ObjectAnimator.ofFloat(binding.nameEditTextLayout, View.SCALE_X, 0.8f, 1f).apply {
+        val nameEditTextLayout = ObjectAnimator.ofFloat(binding.nameEditTextLayout, View.TRANSLATION_X, -100f, 0f).apply {
             duration = 500
             startDelay = 200
         }
 
-        val emailTextView = ObjectAnimator.ofFloat(binding.emailTextView, View.TRANSLATION_Y, 100f, 0f).apply {
-            duration = 500
-            startDelay = 250
-        }
-        val emailTextViewScale = ObjectAnimator.ofFloat(binding.emailTextView, View.SCALE_X, 0.8f, 1f).apply {
+        val emailTextView = ObjectAnimator.ofFloat(binding.emailTextView, View.TRANSLATION_X, -100f, 0f).apply {
             duration = 500
             startDelay = 250
         }
 
-        val emailEditTextLayout = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.TRANSLATION_Y, 100f, 0f).apply {
-            duration = 500
-            startDelay = 300
-        }
-        val emailEditTextLayoutScale = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.SCALE_X, 0.8f, 1f).apply {
+        val emailEditTextLayout = ObjectAnimator.ofFloat(binding.emailEditTextLayout, View.TRANSLATION_X, -100f, 0f).apply {
             duration = 500
             startDelay = 300
         }
 
-        val passwordTextView = ObjectAnimator.ofFloat(binding.passwordTextView, View.TRANSLATION_Y, 100f, 0f).apply {
-            duration = 500
-            startDelay = 350
-        }
-        val passwordTextViewScale = ObjectAnimator.ofFloat(binding.passwordTextView, View.SCALE_X, 0.8f, 1f).apply {
+        val passwordTextView = ObjectAnimator.ofFloat(binding.passwordTextView, View.TRANSLATION_X, -100f, 0f).apply {
             duration = 500
             startDelay = 350
         }
 
-        val passwordEditTextLayout = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.TRANSLATION_Y, 100f, 0f).apply {
-            duration = 500
-            startDelay = 400
-        }
-        val passwordEditTextLayoutScale = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.SCALE_X, 0.8f, 1f).apply {
+        val passwordEditTextLayout = ObjectAnimator.ofFloat(binding.passwordEditTextLayout, View.TRANSLATION_X, -100f, 0f).apply {
             duration = 500
             startDelay = 400
         }
 
-        val signup = ObjectAnimator.ofFloat(binding.signupButton, View.TRANSLATION_Y, 100f, 0f).apply {
-            duration = 500
-            startDelay = 450
-        }
-        val signupScale = ObjectAnimator.ofFloat(binding.signupButton, View.SCALE_X, 0.8f, 1f).apply {
+        val signup = ObjectAnimator.ofFloat(binding.signupButton, View.TRANSLATION_X, -100f, 0f).apply {
             duration = 500
             startDelay = 450
         }
@@ -179,13 +145,13 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
         AnimatorSet().apply {
             playTogether(
                 titleFadeIn,
-                nameTextView, nameTextViewScale,
-                nameEditTextLayout, nameEditTextLayoutScale,
-                emailTextView, emailTextViewScale,
-                emailEditTextLayout, emailEditTextLayoutScale,
-                passwordTextView, passwordTextViewScale,
-                passwordEditTextLayout, passwordEditTextLayoutScale,
-                signup, signupScale
+                nameTextView,
+                nameEditTextLayout,
+                emailTextView,
+                emailEditTextLayout,
+                passwordTextView,
+                passwordEditTextLayout,
+                signup,
             )
             start()
         }

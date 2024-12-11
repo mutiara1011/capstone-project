@@ -28,18 +28,15 @@ class ProfileFragment : Fragment() {
         val binding = inflater.inflate(R.layout.fragment_profile, container, false)
         userNameTextView = binding.findViewById(R.id.userNameTextView)
 
-        // Inisialisasi UserPreference untuk menyimpan data session
         userPreference = UserPreference.getInstance(requireContext().dataStore)
 
-        // Menampilkan nama pengguna
         lifecycleScope.launch(Dispatchers.IO) {
             val user = userPreference.getSession().first()
             requireActivity().runOnUiThread {
-                userNameTextView.text = "Hello, ${user.username}"  // Menampilkan nama pengguna
+                userNameTextView.text = user.username
             }
         }
 
-        // Temukan tombol logout dan atur OnClickListener
         val logoutButton: Button = binding.findViewById(R.id.logoutButton)
         logoutButton.setOnClickListener {
             logout()
@@ -51,10 +48,8 @@ class ProfileFragment : Fragment() {
     private fun logout() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Menghapus session di UserPreference
                 userPreference.logout()
 
-                // Setelah logout berhasil, navigasi ke WelcomeFragment
                 requireActivity().runOnUiThread {
                     findNavController().navigate(R.id.action_profileFragment_to_welcomeFragment)
                 }

@@ -21,25 +21,20 @@ class SignupViewModel : ViewModel() {
                     "password" to password
                 )
 
-                // Mengonversi data ke JSON string menggunakan Gson
                 val jsonData = Gson().toJson(registerData)
 
-                // Membuat RequestBody dengan tipe JSON
                 val requestBody = jsonData.toRequestBody("application/json".toMediaTypeOrNull())
 
-                // Mengirimkan request ke server dengan body JSON dan menerima response
                 val response: RegisterResponse = ApiConfig.getApiService().register(requestBody)
 
-                // Memeriksa apakah status code adalah 200 (sukses)
                 if (response.status.code == 200) {
-                    // Menyampaikan data pendaftaran yang sukses
                     callback(true, "Pendaftaran berhasil. Selamat datang, ${response.data?.username}")
                 } else {
-                    // Menyampaikan pesan error dari server
                     callback(false, "Pendaftaran gagal: ${response.status.message}")
                 }
 
-            } catch (e: Exception) {
+            }
+            catch (e: Exception) {
                 Log.e("SignupViewModel", "Error: ${e.message}")
                 callback(false, e.message.toString())
             }
