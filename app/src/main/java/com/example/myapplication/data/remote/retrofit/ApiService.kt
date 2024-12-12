@@ -1,5 +1,6 @@
 package com.example.myapplication.data.remote.retrofit
 
+import com.example.myapplication.data.remote.response.AqiDailyResponse
 import com.example.myapplication.data.remote.response.AqiDetailResponse
 import com.example.myapplication.data.remote.response.AqiPredictResponse
 import com.example.myapplication.data.remote.response.AqiResponse
@@ -18,8 +19,11 @@ interface ApiService {
     @GET("/aqi/detail")
     fun getAQIDetail(): Call<AqiDetailResponse>
 
-    @GET("/aqi/prediction2")
+    @GET("/aqi/hourly-forecast")
     fun getAQIPredict(): Call<AqiPredictResponse>
+
+    @GET("/aqi/daily-forecast")
+    fun getAQIDaily(): Call<AqiDailyResponse>
 
     @POST("/user/register")
     suspend fun register(

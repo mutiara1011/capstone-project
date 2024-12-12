@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.TextView
 import com.github.mikephil.charting.components.MarkerView
@@ -8,6 +9,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.example.myapplication.R
 import com.github.mikephil.charting.utils.MPPointF
 
+@SuppressLint("ViewConstructor")
 class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(context, layoutResource) {
 
     private val tvPrice: TextView = findViewById(R.id.tvPrice)

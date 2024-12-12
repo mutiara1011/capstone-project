@@ -37,7 +37,7 @@ class ViewModelFactory private constructor(
             return INSTANCE ?: synchronized(this) {
                 val apiService = ApiConfig.getApiService()
                 val userPreference = UserPreference.getInstance(context.dataStore)
-                INSTANCE ?: ViewModelFactory(UserRepository.getInstance(userPreference, apiService), userPreference).also {
+                INSTANCE ?: ViewModelFactory(UserRepository.getInstance(apiService), userPreference).also {
                     INSTANCE = it
                 }
             }

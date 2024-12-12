@@ -1,41 +1,51 @@
 <resources>
     <string name="app_name">Breezo</string>
-    <string name="title_home">Halaman Utama</string>
+
+    <!-- Navigation -->
+    <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifikasi</string>
-    <string name="title_profile">Profil</string>
-    <string name="title_user">Rekomendasi</string>
-    <string name="title_settings">Pengaturan</string>
-    <string name="signup">Daftar</string>
-    <string name="login">Masuk</string>
-    <string name="message_welcome_page">Kami hadir untuk membantu Anda memantau dan memahami kualitas udara di sekitar Anda dengan mudah dan akurat.</string>
-    <string name="title_welcome_page">Selamat datang di Breezo!</string>
-    <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
-    <string name="message_login_page">Masukkan dulu datamu ya!</string>
-    <string name="title_login_page">Bagaimana kualitas udara di sekitar mu?</string>
-    <string name="name_password_empty">Email dan password tidak boleh kosong!</string>
-    <string name="login_failed">Login gagal, periksa kembali email atau password.</string>
-    <string name="no_internet_connection">Tidak ada koneksi internet</string>
-    <string name="session_save_failed">Gagal menyimpan sesi pengguna</string>
-    <string name="fill_fields">Harap isi semua kolom</string>
-    <string name="register_success">Pendaftaran berhasil!</string>
-    <string name="success_message">Akun dengan %1$s berhasil didaftarkan.</string>
-    <string name="ok">ok</string>
+    <string name="title_notifications">Notification</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_user">Recommendation</string>
+    <string name="title_settings">Settings</string>
+
+    <!-- Welcome Page -->
+    <string name="signup">Sign Up</string>
+    <string name="login">Log In</string>
+    <string name="title_welcome_page">Welcome to Breezo!</string>
+    <string name="message_welcome_page">We\'re here to help you easily and accurately monitor and understand the air quality around you.</string>
+
+    <!-- Signup Page -->
+    <string name="title_signup_page">Please complete your information below</string>
+    <string name="session_save_failed">Failed to save user session</string>
+    <string name="fill_fields">Please fill in all fields</string>
+    <string name="register_success">Registration successful!</string>
+    <string name="success_message">An account with %1$s has been successfully registered.</string>
+    <string name="ok">OK</string>
     <string name="name">Username</string>
     <string name="email">Email</string>
-    <string name="invalid_email_format">Format email tidak valid</string>
     <string name="password">Password</string>
-    <string name="profile_icon">Foto Profil</string>
-    <string name="logout">Keluar</string>
+    <string name="invalid_email_format">Invalid email format</string>
+
+    <!-- Login Page -->
+    <string name="message_login_page">Please enter your credentials!</string>
+    <string name="title_login_page">How\'s the air quality around you?</string>
+    <string name="name_password_empty">Please fill in both username and password fields!</string>
+    <string name="login_failed">Login failed. Please check your username or password</string>
+    <string name="no_internet_connection">No internet connection</string>
+
+    <!-- Home Fragment -->
+    <string name="aqi_label">AQI</string>
     <string name="location">JAKARTA</string>
-    <string name="date">Sabtu, 2 November</string>
-    <string name="hour">05.00</string>
+    <string name="icon_degree">Temperature</string>
+    <string name="icon_humid">Humidity</string>
+    <string name="icon_weather">Weather</string>
+    <string name="icon_wind">Wind</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="humidity">Humidity</string>
     <string name="degree_format">%1$s°</string>
     <string name="wind_speed_format">%1$s km/h</string>
     <string name="humidity_format">%1$s%%</string>
-    <string name="icon_suhu">Icon Suhu</string>
-    <string name="icon_lembap">Icon Kelembapan</string>
-    <string name="icon_weather">Icon Weather</string>
     <string name="rainy">Rainy</string>
     <string name="stormy">Stormy</string>
     <string name="sunny">Sunny</string>
@@ -43,22 +53,100 @@
     <string name="cloudy">Cloudy</string>
     <string name="partly_cloudy">Partly Cloudy</string>
     <string name="mostly_cloudy">Mostly Cloudy</string>
-    <string name="full_moon">Full Moon</string>
-    <string name="partly_cloudy_moon">Partly Cloudy Moon</string>
-    <string name="mostly_cloudy_moon">Mostly Cloudy Moon</string>
+    <string name="full_moon">Clear</string>
+    <string name="partly_cloudy_moon">Partly Cloudy</string>
+    <string name="mostly_cloudy_moon">Mostly Cloudy</string>
     <string name="unknown">Unknown</string>
-    <string name="icon_angin">Icon Angin\n</string>
-    <string name="wind_speed">Kecepatan Angin</string>
-    <string name="humidity">Kelembapan</string>
-    <string name="aqi_not_available">Tidak ada data AQI.</string>
-    <string name="not_available">Tidak tersedia</string>
-    <string name="pollutant">Polutan Utama: %1$s (%2$s)</string>
-    <string name="index">53</string>
-    <string name="description">Deskripsi</string>
-    <string name="pollutant_type">Tipe polutan</string>
-    <string name="activity_recommendations">Rekomendasi aktivitas</string>
-    <string name="recommendations">Rekomendasi</string>
-    <string name="air_quality_index">Indeks Kualitas Udara</string>
-    <string name="concentration">31,56 μg/m³</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hourly">Hourly Forecast</string>
+    <string name="daily">Daily Forecast</string>
+
+    <!-- Profile Fragment -->
+    <string name="profile_icon">Profile Picture</string>
+    <string name="logout">Log Out</string>
+
+    <!-- Settings Fragment -->
+    <string name="theme">Theme</string>
+    <string name="language">Language</string>
+    <string name="settings">Settings</string>
+    <string name="language_english">English</string>
+    <string name="language_indonesian">Indonesian</string>
+    <string name="language_selected">Selected Language:</string>
+    <string name="language_select_prompt">Please select a language first</string>
+    <string name="theme_selected">Selected Theme:</string>
+
+    <!-- User Fragment -->
+    <string name="index">Index</string>
+
+    <string name="aqi_not_available">AQI data not available.</string>
+    <string name="not_available">Not available</string>
+    <string name="pollutant">Primary Pollutant: %1$s (%2$s)</string>
+    <string name="pollutant_type">Pollutant Type</string>
+    <string name="activity_recommendations">Activity Recommendations</string>
+    <string name="recommendations">Recommendations</string>
+    <string name="air_quality_index">Air Quality Index</string>
+    <string name="concentration">31.56 μg/m³</string>
+    <string name="data_not_available">Data not available</string>
+
+    <!-- AQI -->
+    <string name="quality_index">Quality Index</string>
+    <string name="error_fetching_data">Failed to fetch data: %1$s</string>
+    <string name="network_error">Network error: %1$s</string>
+
+    <!-- AQI Descriptions -->
+    <string name="description">Description</string>
+    <string name="aqi_good">Good</string>
+    <string name="aqi_moderate">Moderate</string>
+    <string name="aqi_sensitive_unhealthy">Unhealthy for Sensitive Groups</string>
+    <string name="aqi_unhealthy">Unhealthy</string>
+    <string name="aqi_very_unhealthy">Very Unhealthy</string>
+    <string name="aqi_hazardous">Hazardous</string>
+    <string name="aqi_very_hazardous">Very Hazardous</string>
+
+    <!-- Pollutant Full Names -->
+    <string name="ozone">Ozone</string>
+    <string name="carbon_monoxide">Carbon Monoxide</string>
+    <string name="nitrogen_dioxide">Nitrogen Dioxide</string>
+    <string name="particulate_matter_10">Particulate Matter 10 (PM10)</string>
+    <string name="particulate_matter_2_5">Particulate Matter 2.5 (PM2.5)</string>
+    <string name="sulfur_dioxide">Sulfur Dioxide</string>
+    <string name="unknown_pollutant">Unknown</string>
+
+    <!-- AQI Recommendations -->
+    <string name="aqi_0_50">Air quality is excellent. You can enjoy your normal outdoor activities.</string>
+    <string name="aqi_51_100">Air quality is good, but people with lung disease, heart disease, children, and older adults should reduce prolonged or heavy exertion.</string>
+    <string name="aqi_101_150">People with heart or lung disease, older adults, children, and teenagers should reduce prolonged or heavy exertion. Everyone else, especially those with asthma, should limit prolonged or heavy exertion.</string>
+    <string name="aqi_151_200">Unhealthy for everyone, especially people with heart or lung disease, older adults, children, and teenagers. Everyone else should avoid all but essential outdoor activities.</string>
+    <string name="aqi_201_300">Very unhealthy. Everyone should avoid all but essential outdoor activities. People with heart or lung disease should remain indoors and keep activities low.</string>
+    <string name="aqi_301_500">Hazardous. Everyone should avoid all outdoor exertion; stay indoors and keep activities low.</string>
+    <string name="aqi_invalid">Air quality index data is invalid.</string>
+
+    <!-- Health Risks -->
+    <string name="health_risk_low">Very low or no health risk</string>
+    <string name="health_risk_moderate">Moderate risk for sensitive groups</string>
+    <string name="health_risk_high">High risk for sensitive groups</string>
+    <string name="health_risk_very_high">Very high risk for sensitive groups</string>
+    <string name="health_risk_hazardous">Hazardous health risk, stay indoors</string>
+    <string name="health_risk_invalid">Air quality index data is invalid</string>
+
+    <!-- Descriptions -->
+    <string name="description_0_50">No significant health effects.</string>
+    <string name="description_51_100">Mild symptoms in people with asthma such as cough or shortness of breath.
+        \nMild irritation of the respiratory tract.</string>
+    <string name="description_101_150">Increased risk of asthma attacks.
+        \nSymptoms of COPD (Chronic Obstructive Pulmonary Disease) may worsen.
+        \nIncreased blood pressure for people with heart disease.
+        \nRisk of eye, nose, and throat irritation in children and the elderly.</string>
+    <string name="description_151_200">More frequent asthma attacks.
+        \nCOPD symptoms may become more severe.
+        \nIncreased risk of cardiovascular complications for people with heart disease.
+        \nChildren, the elderly, and pregnant women are especially vulnerable to the effects of air pollution.</string>
+    <string name="description_201_300">Serious health risks for people with asthma and COPD, including the need for emergency medical care.
+        \nIncreased risk of heart attacks for people with heart disease.
+        \nShort-term lung damage in children.</string>
+    <string name="description_301_500">Very serious effects on the respiratory system, especially for people with asthma and COPD.
+        \nRisk of acute heart attacks.
+        \nPotential for permanent lung damage, especially in children and the elderly.
+        \nEveryone is strongly advised to stay indoors.</string>
+    <string name="description_invalid">Air quality index is invalid.</string>
+
 </resources>

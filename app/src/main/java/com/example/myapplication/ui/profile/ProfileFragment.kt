@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
 import com.example.myapplication.data.remote.response.acc.pref.UserPreference
 import com.example.myapplication.data.remote.response.acc.pref.dataStore
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -40,6 +41,11 @@ class ProfileFragment : Fragment() {
         val logoutButton: Button = binding.findViewById(R.id.logoutButton)
         logoutButton.setOnClickListener {
             logout()
+        }
+
+        val fabSettings: FloatingActionButton = binding.findViewById(R.id.fabSettings)
+        fabSettings.setOnClickListener {
+            findNavController().navigate(R.id.action_profileFragment_to_settingsFragment)
         }
 
         return binding

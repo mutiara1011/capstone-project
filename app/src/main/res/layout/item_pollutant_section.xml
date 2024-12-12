@@ -19,7 +19,7 @@
 
     <TextView
         android:id="@+id/text_index"
-        android:layout_width="0dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:paddingStart="9dp"
         android:paddingEnd="9dp"
@@ -29,6 +29,7 @@
         android:textColor="?attr/colorOnSecondary"
         android:textSize="45sp"
         android:textStyle="bold"
+        android:fontFamily="@font/inria_serif_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/line"/>
@@ -39,6 +40,7 @@
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:textStyle="bold"
+        android:fontFamily="@font/inria_serif_light"
         android:layout_marginTop="9dp"
         android:textColor="?attr/colorOnSecondary"
         app:layout_constraintStart_toEndOf="@+id/text_index"
@@ -52,6 +54,7 @@
         android:layout_height="wrap_content"
         android:textColor="?attr/colorOnSecondary"
         android:textSize="13sp"
+        android:fontFamily="@font/inria_serif_light"
         app:layout_constraintStart_toEndOf="@+id/text_index"
         app:layout_constraintTop_toBottomOf="@+id/text_description"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,11 +64,12 @@
         android:id="@+id/text_concentration"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/inria_serif_light"
         android:textColor="?attr/colorOnSecondary"
         android:textSize="11sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/text_index"
         app:layout_constraintTop_toBottomOf="@+id/text_pollutant"
-        app:layout_constraintEnd_toEndOf="parent"
         tools:text="@string/concentration" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

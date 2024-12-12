@@ -43,7 +43,7 @@
                     android:singleLine="false"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="50sp"
+                    android:textSize="80sp"
                     android:textStyle="bold"
                     android:paddingStart="5dp"
                     android:paddingEnd="2.5dp"
@@ -93,7 +93,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="30sp"
-                tools:text="Deskripsi" />
+                tools:text="@string/description" />
 
             <LinearLayout
                 android:id="@+id/location_container"
@@ -154,7 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="3dp"
                 android:background="@android:color/transparent">
 
                 <GridLayout
@@ -197,8 +197,9 @@
                                 android:layout_width="50dp"
                                 android:layout_height="150dp"
                                 android:layout_gravity="center_vertical"
-                                android:contentDescription="@string/icon_suhu"
-                                android:src="@drawable/suhu" />
+                                android:contentDescription="@string/icon_degree"
+                                android:src="@drawable/suhu"
+                                tools:ignore="ImageContrastCheck" />
 
                             <TextView
                                 android:id="@+id/tvDegree"
@@ -208,6 +209,7 @@
                                 android:fontFamily="@font/inter_semibold"
                                 android:textColor="@color/white"
                                 android:textSize="50sp"
+                                tools:ignore="TextContrastCheck"
                                 tools:text="30°" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
@@ -235,25 +237,28 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:padding="5dp">
+                            android:padding="5dp"
+                            tools:ignore="UseCompoundDrawables">
 
                             <ImageView
                                 android:id="@+id/ivWeatherIcon"
-                                android:layout_width="150dp"
-                                android:layout_height="120dp"
+                                android:layout_width="110dp"
+                                android:layout_height="110dp"
                                 android:layout_gravity="center"
                                 android:contentDescription="@string/icon_weather"
-                                android:src="@drawable/mostly_cloudy" />
+                                android:src="@drawable/mostly_cloudy"
+                                tools:ignore="ImageContrastCheck" />
 
                             <TextView
                                 android:id="@+id/tvWeather"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:paddingTop="2dp"
                                 android:fontFamily="@font/inria_serif_light"
+                                android:layout_gravity="center_horizontal"
+                                android:paddingTop="2dp"
                                 android:textColor="@color/white"
-                                android:textSize="13sp"
+                                android:textSize="17sp"
+                                tools:ignore="TextContrastCheck"
                                 tools:text="Cloudy" />
 
                         </LinearLayout>
@@ -290,8 +295,9 @@
                                 android:layout_width="110dp"
                                 android:layout_height="110dp"
                                 android:layout_gravity="center_horizontal"
-                                android:contentDescription="@string/icon_angin"
-                                android:src="@drawable/windy" />
+                                android:contentDescription="@string/icon_wind"
+                                android:src="@drawable/windy"
+                                tools:ignore="ImageContrastCheck" />
 
                             <TextView
                                 android:id="@+id/text_wind"
@@ -302,7 +308,8 @@
                                 android:fontFamily="@font/inria_serif_light"
                                 android:text="@string/wind_speed"
                                 android:textColor="@color/white"
-                                android:textSize="15sp" />
+                                android:textSize="15sp"
+                                tools:ignore="TextContrastCheck" />
 
                             <TextView
                                 android:id="@+id/tvWindSpeed"
@@ -313,6 +320,7 @@
                                 android:fontFamily="@font/inria_serif_light"
                                 android:textColor="@color/white"
                                 android:textSize="20sp"
+                                tools:ignore="TextContrastCheck"
                                 tools:text="80 km/jam" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
@@ -346,8 +354,9 @@
                                 android:layout_width="110dp"
                                 android:layout_height="110dp"
                                 android:layout_gravity="center_horizontal"
-                                android:contentDescription="@string/icon_lembap"
-                                android:src="@drawable/kelembapan" />
+                                android:contentDescription="@string/icon_humid"
+                                android:src="@drawable/kelembapan"
+                                tools:ignore="ImageContrastCheck" />
 
                             <TextView
                                 android:id="@+id/text_humid"
@@ -358,7 +367,8 @@
                                 android:fontFamily="@font/inria_serif_light"
                                 android:text="@string/humidity"
                                 android:textColor="@color/white"
-                                android:textSize="15sp" />
+                                android:textSize="15sp"
+                                tools:ignore="TextContrastCheck" />
 
                             <TextView
                                 android:id="@+id/tvHumidity"
@@ -369,6 +379,7 @@
                                 android:fontFamily="@font/inria_serif_light"
                                 android:textColor="@color/white"
                                 android:textSize="20sp"
+                                tools:ignore="TextContrastCheck"
                                 tools:text="90%" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
@@ -379,7 +390,8 @@
                 android:id="@+id/firstCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="3dp"
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="6dp"
                 app:cardBackgroundColor="?attr/colorPrimaryVariant"
@@ -391,6 +403,19 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/text_hourly"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:fontFamily="@font/inria_serif_light"
+                        android:gravity="start"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:text="@string/hourly" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewHour"
@@ -410,7 +435,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Baik"
+                        android:text="@string/aqi_good"
                         android:textColor="?attr/colorOnPrimary"
                         android:textStyle="bold" />
 
@@ -464,7 +489,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_marginEnd="8dp"
-                        android:text="Berbahaya"
+                        android:text="@string/aqi_hazardous"
                         android:textColor="?attr/colorOnPrimary"
                         android:textStyle="bold" />
 
@@ -476,7 +501,7 @@
                 android:id="@+id/secondCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="6dp"
@@ -490,6 +515,19 @@
                     android:orientation="vertical"
                     android:fitsSystemWindows="true"
                     android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/text_daily"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:fontFamily="@font/inria_serif_light"
+                        android:gravity="start"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:text="@string/daily" />
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/lineChart"

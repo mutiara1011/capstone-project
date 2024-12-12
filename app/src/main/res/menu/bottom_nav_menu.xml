@@ -12,11 +12,6 @@
         android:title="@string/title_user" />
 
     <item
-        android:id="@+id/settingsFragment"
-        android:icon="@drawable/setting"
-        android:title="@string/title_settings" />
-
-    <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/profile"
         android:title="@string/title_profile" />

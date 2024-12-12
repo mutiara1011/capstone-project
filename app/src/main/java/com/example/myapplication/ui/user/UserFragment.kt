@@ -36,7 +36,6 @@ class UserFragment : Fragment() {
         observeLoadingState()
         observeErrorState()
 
-        userViewModel.fetchData()
         userViewModel.fetchPollutants()
 
         pollutantAdapter = PollutantAdapter(listOf())
@@ -46,8 +45,6 @@ class UserFragment : Fragment() {
         }
 
         observeViewModel()
-
-        userViewModel.fetchPollutants()
 
         return binding?.root!!
     }
@@ -63,8 +60,6 @@ class UserFragment : Fragment() {
             if (!errorMessage.isNullOrEmpty()) {
                 Snackbar.make(binding?.root ?: return@observe, errorMessage, Snackbar.LENGTH_LONG)
                     .setAction("Retry") {
-                        // Retry fetch data jika ada error
-                        userViewModel.fetchData()
                         userViewModel.fetchPollutants()
                     }
                     .show()
@@ -79,12 +74,13 @@ class UserFragment : Fragment() {
 
             aqiIndex.observe(viewLifecycleOwner) { aqi ->
                 aqi?.let {
-                    val (activityRecommendations, recommendations, description) = userViewModel.getAQIRecommendation(aqi)
+                    val (activityRecommendations, recommendations, description) = getAQIRecommendation(aqi)
                     binding?.activityRecommendations?.text = activityRecommendations
                     binding?.recommendations?.text = recommendations
                     if (_binding != null && description.isNotEmpty()) {
                         setupViewPager(description.split("\n").filter { it.isNotBlank() })
-                    }                }
+                    }
+                }
             }
 
             pollutants.observe(viewLifecycleOwner) { pollutants ->
@@ -130,6 +126,40 @@ class UserFragment : Fragment() {
                 autoScrollHandler?.postDelayed(autoScrollRunnable!!, 3000)
             }
         })
+    }
+
+    private fun getAQIRecommendation(aqiValue: Int): Triple<String, String, String> {
+        val activityRecommendations = when (aqiValue) {
+            in 0..50 -> getString(R.string.aqi_0_50)
+            in 51..100 -> getString(R.string.aqi_51_100)
+            in 101..150 -> getString(R.string.aqi_101_150)
+            in 151..200 -> getString(R.string.aqi_151_200)
+            in 201..300 -> getString(R.string.aqi_201_300)
+            in 301..500 -> getString(R.string.aqi_301_500)
+            else -> getString(R.string.aqi_invalid)
+        }
+
+        val healthRecommendations = when (aqiValue) {
+            in 0..50 -> getString(R.string.health_risk_low)
+            in 51..100 -> getString(R.string.health_risk_moderate)
+            in 101..150 -> getString(R.string.health_risk_high)
+            in 151..200 -> getString(R.string.health_risk_very_high)
+            in 201..300 -> getString(R.string.health_risk_hazardous)
+            in 301..500 -> getString(R.string.health_risk_hazardous)
+            else -> getString(R.string.health_risk_invalid)
+        }
+
+        val description = when (aqiValue) {
+            in 0..50 -> getString(R.string.description_0_50)
+            in 51..100 -> getString(R.string.description_51_100)
+            in 101..150 -> getString(R.string.description_101_150)
+            in 151..200 -> getString(R.string.description_151_200)
+            in 201..300 -> getString(R.string.description_201_300)
+            in 301..500 -> getString(R.string.description_301_500)
+            else -> getString(R.string.description_invalid)
+        }
+
+        return Triple(activityRecommendations, healthRecommendations, description)
     }
 
     override fun onDestroyView() {

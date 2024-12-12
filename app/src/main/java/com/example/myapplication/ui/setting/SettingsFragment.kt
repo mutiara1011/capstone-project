@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.setting
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,37 +14,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSettingsBinding
+import java.util.Locale
 
+@Suppress("DEPRECATION")
 class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var settingsViewModel: SettingsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
-
-        settingsViewModel.language.observe(viewLifecycleOwner) {
-            binding.language.text = it
-        }
-
-        settingsViewModel.theme.observe(viewLifecycleOwner) {
-            binding.theme.text = it
-        }
-
-        settingsViewModel.notifications.observe(viewLifecycleOwner) {
-            binding.notifications.text = it
-        }
 
         binding.language.setOnClickListener {
             showLanguageDialog()
@@ -56,17 +43,22 @@ class SettingsFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun showLanguageDialog() {
-        val languages = arrayOf("English", "Bahasa Indonesia")
+        val languages = arrayOf(
+            getString(R.string.language_english),
+            getString(R.string.language_indonesian)
+        )
+        val languageCodes = arrayOf("en", "id")
         val sharedPreferences =
             requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE)
-        val currentLanguage = sharedPreferences.getString("language", "English")
+        val currentLanguageCode = sharedPreferences.getString("language", "en")
 
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_language, null)
         val radioGroup = dialogView.findViewById<RadioGroup>(R.id.language_radio_group)
         val okButton = dialogView.findViewById<Button>(R.id.ok_button)
 
-        languages.forEach { language ->
+        languages.forEachIndexed { index, language ->
             val radioButton = RadioButton(requireContext()).apply {
                 text = language
                 textSize = 16f
@@ -74,7 +66,7 @@ class SettingsFragment : Fragment() {
             }
             radioGroup.addView(radioButton)
 
-            if (language == currentLanguage) {
+            if (languageCodes[index] == currentLanguageCode) {
                 radioButton.isChecked = true
             }
         }
@@ -89,19 +81,22 @@ class SettingsFragment : Fragment() {
             if (selectedRadioButtonId != -1) {
                 val selectedRadioButton = dialogView.findViewById<RadioButton>(selectedRadioButtonId)
                 val selectedLanguage = selectedRadioButton.text.toString()
+                val selectedLanguageCode = languageCodes[languages.indexOf(selectedLanguage)]
 
                 Toast.makeText(
                     requireContext(),
-                    "Bahasa dipilih: $selectedLanguage",
+                    getString(R.string.language_selected, selectedLanguage),
                     Toast.LENGTH_SHORT
                 ).show()
 
-                sharedPreferences.edit().putString("language", selectedLanguage).apply()
+                sharedPreferences.edit().putString("language", selectedLanguageCode).apply()
+
+                updateLocale(selectedLanguageCode)
                 dialog.dismiss()
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Silakan pilih bahasa terlebih dahulu",
+                    getString(R.string.language_select_prompt),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -115,6 +110,17 @@ class SettingsFragment : Fragment() {
         dialog.show()
     }
 
+    private fun updateLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val config = requireContext().resources.configuration
+        config.setLocale(locale)
+        requireContext().resources.updateConfiguration(config, requireContext().resources.displayMetrics)
+
+        requireActivity().recreate()
+    }
+
+    @SuppressLint("StringFormatInvalid")
     private fun showThemeDialog() {
         val sharedPreferences =
             requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE)
@@ -146,7 +152,7 @@ class SettingsFragment : Fragment() {
 
             sharedPreferences.edit().putString("theme", selectedTheme).apply()
 
-            Toast.makeText(requireContext(), "Tema dipilih: $selectedTheme", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.theme_selected, selectedTheme), Toast.LENGTH_SHORT).show()
 
             dialog.dismiss()
         }

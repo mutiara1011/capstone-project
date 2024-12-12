@@ -78,6 +78,13 @@ class HomeFragment : Fragment() {
         sharedPreferences.edit().putBoolean("isNotificationSent", false).apply()
     }
 
+    private fun scheduleAqiNotificationWorker() {
+        val workRequest = PeriodicWorkRequestBuilder<AQINotificationWorker>(1, TimeUnit.HOURS)
+            .build()
+
+        WorkManager.getInstance(requireContext()).enqueue(workRequest)
+    }
+
     private fun observeLoadingState() {
         homeViewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
@@ -104,13 +111,6 @@ class HomeFragment : Fragment() {
                 .setPopUpTo(R.id.homeFragment, true)
                 .build()
         )
-    }
-
-    private fun scheduleAqiNotificationWorker() {
-        val workRequest = PeriodicWorkRequestBuilder<AQINotificationWorker>(1, TimeUnit.HOURS)
-            .build()
-
-        WorkManager.getInstance(requireContext()).enqueue(workRequest)
     }
 
     private fun setupLineChart() {
@@ -194,10 +194,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun observePollutants() {
-        homeViewModel.aqiIndeks.observe(viewLifecycleOwner) { aqiIndex ->
+        homeViewModel.aqiIndex.observe(viewLifecycleOwner) { aqiIndex ->
             if (aqiIndex != null) {
                 binding.textAqi.text = "$aqiIndex"
-                binding.aqi.text = "AQI"
+                binding.aqi.text = getString(R.string.aqi_label)
+
+                val aqiDescription = getAQIDescription(aqiIndex)
+                binding.textDescription.text = aqiDescription
 
                 val sharedPreferences = requireContext().getSharedPreferences("AQIData", Context.MODE_PRIVATE)
                 val editor = sharedPreferences.edit()
@@ -205,14 +208,20 @@ class HomeFragment : Fragment() {
                 editor.apply()
             } else {
                 binding.textAqi.text = getString(R.string.aqi_not_available)
-            }
-        }
-        homeViewModel.aqiDescription.observe(viewLifecycleOwner) { description ->
-            if (!description.isNullOrEmpty()) {
-                binding.textDescription.text = description
-            } else {
                 binding.textDescription.text = "-"
             }
+        }
+    }
+
+    private fun getAQIDescription(aqiIndex: Int): String {
+        return when (aqiIndex) {
+            in 0..50 -> getString(R.string.aqi_good)
+            in 51..100 -> getString(R.string.aqi_moderate)
+            in 101..150 -> getString(R.string.aqi_sensitive_unhealthy)
+            in 151..200 -> getString(R.string.aqi_unhealthy)
+            in 201..300 -> getString(R.string.aqi_very_unhealthy)
+            in 301..500 -> getString(R.string.aqi_hazardous)
+            else -> getString(R.string.aqi_very_hazardous)
         }
     }
 
