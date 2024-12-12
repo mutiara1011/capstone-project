@@ -16,16 +16,7 @@ import java.util.Locale
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var sharedPrefs: SharedPreferences
 
-    override fun attachBaseContext(newBase: Context) {
-        sharedPrefs = newBase.getSharedPreferences("AppPreferences", MODE_PRIVATE)
-        val language = sharedPrefs.getString("language", Locale.getDefault().language) ?: "en"
-        val locale = Locale(language)
-        val config = newBase.resources.configuration
-        config.setLocale(locale)
-        super.attachBaseContext(newBase.createConfigurationContext(config))
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

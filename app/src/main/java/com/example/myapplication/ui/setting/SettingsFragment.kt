@@ -13,6 +13,7 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSettingsBinding
@@ -50,9 +51,8 @@ class SettingsFragment : Fragment() {
             getString(R.string.language_indonesian)
         )
         val languageCodes = arrayOf("en", "id")
-        val sharedPreferences =
-            requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE)
-        val currentLanguageCode = sharedPreferences.getString("language", "en")
+        val sharedPreferences = requireContext().getSharedPreferences("settings", Context.MODE_PRIVATE)
+        val currentLanguageCode = sharedPreferences.getString("language", "en") ?: "en"
 
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_language, null)
         val radioGroup = dialogView.findViewById<RadioGroup>(R.id.language_radio_group)
@@ -62,7 +62,7 @@ class SettingsFragment : Fragment() {
             val radioButton = RadioButton(requireContext()).apply {
                 text = language
                 textSize = 16f
-                setTextColor(resources.getColor(android.R.color.white, null))
+                setTextColor(ContextCompat.getColor(requireContext(), android.R.color.white))
             }
             radioGroup.addView(radioButton)
 
@@ -89,7 +89,10 @@ class SettingsFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                sharedPreferences.edit().putString("language", selectedLanguageCode).apply()
+                sharedPreferences.edit().apply {
+                    putString("language", selectedLanguageCode)
+                    apply()
+                }
 
                 updateLocale(selectedLanguageCode)
                 dialog.dismiss()
@@ -119,6 +122,7 @@ class SettingsFragment : Fragment() {
 
         requireActivity().recreate()
     }
+
 
     @SuppressLint("StringFormatInvalid")
     private fun showThemeDialog() {
