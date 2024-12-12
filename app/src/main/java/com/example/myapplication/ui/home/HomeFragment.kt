@@ -2,12 +2,12 @@ package com.example.myapplication.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.myapplication.R
+import com.example.myapplication.data.remote.response.DailyDataItem
 import com.example.myapplication.data.remote.response.acc.pref.UserPreference
 import com.example.myapplication.data.remote.response.acc.pref.dataStore
 import com.example.myapplication.databinding.FragmentHomeBinding
@@ -26,7 +27,6 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -61,9 +61,6 @@ class HomeFragment : Fragment() {
         observePollutants()
         observeWeatherData()
 
-        lineChart = binding.lineChart
-        setupLineChart()
-
         binding.textAqi.setOnClickListener { navigateToUserFragment() }
         binding.aqi.setOnClickListener { navigateToUserFragment() }
         binding.textDescription.setOnClickListener { navigateToUserFragment() }
@@ -91,18 +88,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun observeErrorState() {
-        homeViewModel.errorState.observe(viewLifecycleOwner) { errorMessage ->
-            if (!errorMessage.isNullOrEmpty()) {
-                Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_LONG)
-                    .setAction("Retry") {
-                        homeViewModel.fetchData()
-                    }
-                    .show()
-            }
-        }
-    }
-
     private fun navigateToUserFragment() {
         findNavController().navigate(
             R.id.action_homeFragment_to_userFragment,
@@ -111,62 +96,6 @@ class HomeFragment : Fragment() {
                 .setPopUpTo(R.id.homeFragment, true)
                 .build()
         )
-    }
-
-    private fun setupLineChart() {
-        val entries = ArrayList<Entry>()
-
-        // Data dummy untuk chart
-        entries.apply {
-            add(Entry(0f, 10f))
-            add(Entry(1f, 15f))
-            add(Entry(2f, 7f))
-            add(Entry(3f, 20f))
-            add(Entry(4f, 16f))
-            add(Entry(5f, 25f))
-            add(Entry(6f, 10f))
-        }
-
-        val dataSet = LineDataSet(entries, "AQI Forecast").apply {
-            color = ContextCompat.getColor(requireContext(), R.color.teal_200)
-            setCircleColor(ContextCompat.getColor(requireContext(), R.color.teal_200))
-            lineWidth = 3f
-            setDrawValues(false)
-            mode = LineDataSet.Mode.CUBIC_BEZIER
-            setDrawFilled(true)
-            fillColor = ContextCompat.getColor(requireContext(), R.color.teal_200)
-        }
-
-        val lineData = LineData(dataSet)
-        lineChart.data = lineData
-
-        // Konfigurasi X-Axis
-        lineChart.xAxis.apply {
-            position = XAxis.XAxisPosition.BOTTOM
-            granularity = 1f
-            setDrawLabels(true)
-            valueFormatter = IndexAxisValueFormatter(listOf("Today", "Wed", "Thu", "Fri", "Sat", "Sun", "Mon"))
-            labelRotationAngle = 0f
-        }
-
-        // Nonaktifkan sumbu kanan
-        lineChart.axisRight.isEnabled = false
-        lineChart.axisLeft.isEnabled = true
-
-        // Aktifkan fitur chart
-        lineChart.setTouchEnabled(true)
-        lineChart.setPinchZoom(true)
-        lineChart.description.text = "Weekly AQI Forecast"
-
-        // Tambahkan animasi
-        lineChart.animateX(1500, Easing.EaseInOutQuad)
-
-        // Tambahkan MarkerView
-        val markerView = CustomMarkerView(requireContext(), R.layout.marker_view)
-        lineChart.marker = markerView
-
-        // Refresh chart
-        lineChart.invalidate()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -179,9 +108,6 @@ class HomeFragment : Fragment() {
         }
 
         observeLoadingState()
-        observeErrorState()
-
-        homeViewModel.fetchData()
 
         homeViewModel.time.observe(viewLifecycleOwner) { currentTime ->
             binding.textTime.text = currentTime
@@ -190,6 +116,10 @@ class HomeFragment : Fragment() {
         setupRecyclerView()
         observePredict()
         homeViewModel.getPredict()
+
+        lineChart = view.findViewById(R.id.lineChart)
+        observeDaily()
+        homeViewModel.getDaily()
 
     }
 
@@ -269,21 +199,6 @@ class HomeFragment : Fragment() {
         binding.ivWeatherIcon.setImageResource(R.drawable.ic_default_weather)
     }
 
-    private fun setupRecyclerView() {
-        adapter = HomeAdapter()
-        binding.recyclerViewHour.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = adapter
-        }
-        homeViewModel.aqiPredict.observe(viewLifecycleOwner) { aqiPredict ->
-            if (aqiPredict != null) {
-                binding.recyclerViewHour.adapter = adapter
-            } else {
-                Toast.makeText(context, "Data not available", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     private fun observePredict() {
         homeViewModel.aqiPredict.observe(viewLifecycleOwner) { aqiPredict ->
             if (aqiPredict != null) {
@@ -291,6 +206,93 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
+    private fun setupRecyclerView() {
+        adapter = HomeAdapter()
+        binding.recyclerViewHour.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = adapter
+        }
+        binding.progressRecyclerViewHour.visibility = View.VISIBLE
+
+        homeViewModel.aqiPredict.observe(viewLifecycleOwner) { aqiPredict ->
+            if (aqiPredict != null) {
+                binding.recyclerViewHour.adapter = adapter
+                binding.progressRecyclerViewHour.visibility = View.GONE
+            } else {
+                Toast.makeText(context, "Data not available", Toast.LENGTH_SHORT).show()
+                binding.progressRecyclerViewHour.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun observeDaily() {
+        homeViewModel.aqiDaily.observe(viewLifecycleOwner) { aqiDaily ->
+            if (aqiDaily != null) {
+                Log.d("AQI Data", "Data received: $aqiDaily")
+                setupLineChart(aqiDaily)
+            } else {
+                Log.d("AQI Data", "No data available")
+            }
+        }
+    }
+
+    private fun setupLineChart(dailyData: List<DailyDataItem>) {
+        val entries = ArrayList<Entry>()
+
+        // Ambil hanya 7 data terakhir atau sesuaikan sesuai kebutuhan
+        val dataToDisplay = dailyData.takeLast(7)
+
+        for (i in dataToDisplay.indices) {
+            val date = dataToDisplay[i].date
+            val aqiValue = dataToDisplay[i].detail.firstOrNull()?.aqiIndex ?: 0
+
+            if (aqiValue > 0) {
+                entries.add(Entry(i.toFloat(), aqiValue.toFloat()))
+            }
+        }
+
+        val dataSet = LineDataSet(entries, "AQI Daily")
+        dataSet.apply {
+            color = resources.getColor(R.color.teal_200, null)
+            setCircleColor(resources.getColor(R.color.teal_200, null))
+            lineWidth = 3f
+            setDrawValues(false)
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            setDrawFilled(true)
+            fillColor = resources.getColor(R.color.teal_200, null)
+        }
+
+        val lineData = LineData(dataSet)
+        lineChart.data = lineData
+
+        // Konfigurasi X-Axis
+        lineChart.xAxis.apply {
+            position = XAxis.XAxisPosition.BOTTOM
+            granularity = 1f
+            setDrawLabels(true)
+            // Menampilkan label hanya untuk 7 data terakhir
+            valueFormatter = IndexAxisValueFormatter(dataToDisplay.map { it.date })
+            labelRotationAngle = 0f
+            // Membatasi jumlah label X-axis hanya 7
+            setLabelCount(7, true)
+        }
+
+        lineChart.axisRight.isEnabled = false
+        lineChart.axisLeft.isEnabled = true
+
+        lineChart.setTouchEnabled(true)
+        lineChart.setPinchZoom(true)
+        lineChart.description.text = "Weekly AQI Forecast"
+
+        lineChart.animateX(1500, Easing.EaseInOutQuad)
+
+        val markerView = CustomMarkerView(requireContext(), R.layout.marker_view)
+        lineChart.marker = markerView
+
+        lineChart.invalidate()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

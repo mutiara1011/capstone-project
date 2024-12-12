@@ -14,7 +14,7 @@ object ApiConfig {
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://43207vdf-3000.asse.devtunnels.ms")
+            .baseUrl("https://breezo-646402191362.us-central1.run.app")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
