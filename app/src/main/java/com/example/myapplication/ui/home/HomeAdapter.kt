@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.R
 import com.example.myapplication.data.remote.response.DataItem
 import com.example.myapplication.databinding.ItemHourBinding
 
@@ -20,7 +21,9 @@ class HomeAdapter : ListAdapter<DataItem, HomeAdapter.MyViewHolder>(DIFF_CALLBAC
             binding.indexPredict.text = aqiIndex.toString()
 
             binding.root.setCardBackgroundColor(getCardColor(aqiIndex))
-            binding.details.text = dataItem.mainPolutant?.aqiIndex?.let { getAQIDescription(it) } ?: "Data tidak tersedia"
+            binding.details.text = dataItem.mainPolutant?.aqiIndex?.let {
+                getAQIDescription(it)
+            } ?: binding.root.context.getString(R.string.data_not_available)
         }
 
         private fun getCardColor(aqiIndex: Int): Int {
@@ -35,16 +38,16 @@ class HomeAdapter : ListAdapter<DataItem, HomeAdapter.MyViewHolder>(DIFF_CALLBAC
         }
 
         private fun getAQIDescription(aqiIndex: Int): String {
+            val context = binding.root.context
             return when (aqiIndex) {
-                in 0..50 -> "Baik"
-                in 51..100 -> "Sedang"
-                in 101..150 -> "Tidak Sehat bagi Kelompok Sensitif"
-                in 151..200 -> "Tidak Sehat"
-                in 201..300 -> "Sangat Tidak Sehat"
-                else -> "Berbahaya"
+                in 0..50 -> context.getString(R.string.aqi_good)
+                in 51..100 -> context.getString(R.string.aqi_moderate)
+                in 101..150 -> context.getString(R.string.aqi_sensitive_unhealthy)
+                in 151..200 -> context.getString(R.string.aqi_unhealthy)
+                in 201..300 -> context.getString(R.string.aqi_very_unhealthy)
+                else -> context.getString(R.string.aqi_hazardous)
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

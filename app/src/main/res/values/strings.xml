@@ -1,41 +1,51 @@
 <resources>
     <string name="app_name">Breezo</string>
+
+    <!-- Navigation -->
     <string name="title_home">Halaman Utama</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_dashboard">Dasbor</string>
     <string name="title_notifications">Notifikasi</string>
     <string name="title_profile">Profil</string>
     <string name="title_user">Rekomendasi</string>
     <string name="title_settings">Pengaturan</string>
+
+    <!-- Welcome Page -->
     <string name="signup">Daftar</string>
     <string name="login">Masuk</string>
-    <string name="message_welcome_page">Kami hadir untuk membantu Anda memantau dan memahami kualitas udara di sekitar Anda dengan mudah dan akurat.</string>
     <string name="title_welcome_page">Selamat datang di Breezo!</string>
+    <string name="message_welcome_page">Kami hadir untuk membantu Anda memantau dan memahami kualitas udara di sekitar Anda dengan mudah dan akurat.</string>
+
+    <!-- Signup Page -->
     <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
-    <string name="message_login_page">Masukkan dulu datamu ya!</string>
-    <string name="title_login_page">Bagaimana kualitas udara di sekitar mu?</string>
-    <string name="name_password_empty">Email dan password tidak boleh kosong!</string>
-    <string name="login_failed">Login gagal, periksa kembali email atau password.</string>
-    <string name="no_internet_connection">Tidak ada koneksi internet</string>
     <string name="session_save_failed">Gagal menyimpan sesi pengguna</string>
     <string name="fill_fields">Harap isi semua kolom</string>
     <string name="register_success">Pendaftaran berhasil!</string>
     <string name="success_message">Akun dengan %1$s berhasil didaftarkan.</string>
-    <string name="ok">ok</string>
+    <string name="ok">OK</string>
     <string name="name">Nama Pengguna</string>
     <string name="email">Email</string>
-    <string name="invalid_email_format">Format email tidak valid</string>
     <string name="password">Password</string>
-    <string name="profile_icon">Foto Profil</string>
-    <string name="logout">Keluar</string>
+    <string name="invalid_email_format">Format email tidak valid</string>
+
+    <!-- Login Page -->
+    <string name="message_login_page">Masukkan dulu datamu ya!</string>
+    <string name="title_login_page">Bagaimana kualitas udara di sekitar mu?</string>
+    <string name="name_password_empty">Nama pengguna dan password tidak boleh kosong!</string>
+    <string name="login_failed">Login gagal, periksa kembali nama pengguna atau password.</string>
+    <string name="no_internet_connection">Tidak ada koneksi internet</string>
+
+    <!-- Home Fragment -->
+    <string name="aqi_label">AQI</string>
     <string name="location">JAKARTA</string>
-    <string name="date">Sabtu, 2 November</string>
-    <string name="hour">05.00</string>
+    <string name="icon_degree">Ikon Suhu</string>
+    <string name="icon_humid">Ikon Kelembapan</string>
+    <string name="icon_weather">Ikon Cuaca</string>
+    <string name="icon_wind">Ikon Angin\n</string>
+    <string name="wind_speed">Kecepatan Angin</string>
+    <string name="humidity">Kelembapan</string>
     <string name="degree_format">%1$s°</string>
     <string name="wind_speed_format">%1$s km/h</string>
     <string name="humidity_format">%1$s%%</string>
-    <string name="icon_suhu">Icon Suhu</string>
-    <string name="icon_lembap">Icon Kelembapan</string>
-    <string name="icon_weather">Icon Weather</string>
     <string name="rainy">Hujan</string>
     <string name="stormy">Badai</string>
     <string name="sunny">Cerah</string>
@@ -47,18 +57,96 @@
     <string name="partly_cloudy_moon">Sebagian berawan</string>
     <string name="mostly_cloudy_moon">Sebagian besar berawan</string>
     <string name="unknown">Tidak diketahui</string>
-    <string name="icon_angin">Icon Angin\n</string>
-    <string name="wind_speed">Kecepatan Angin</string>
-    <string name="humidity">Kelembapan</string>
+    <string name="hourly">Prediksi per Jam</string>
+    <string name="daily">Prediksi Harian</string>
+
+    <!-- Profile Fragment -->
+    <string name="profile_icon">Foto Profil</string>
+    <string name="logout">Keluar</string>
+
+    <!-- Settings Fragment -->
+    <string name="theme">Tema</string>
+    <string name="language">Bahasa</string>
+    <string name="settings">Pengaturan</string>
+    <string name="language_english">Bahasa Inggris</string>
+    <string name="language_indonesian">Bahasa Indonesia</string>
+    <string name="language_selected">Bahasa dipilih:</string>
+    <string name="language_select_prompt">Silahkan pilih bahasa terlebih dahulu</string>
+    <string name="theme_selected">Tema dipilih:</string>
+
+    <!-- User Fragment -->
+    <string name="index">Indeks</string>
+
     <string name="aqi_not_available">Tidak ada data AQI.</string>
     <string name="not_available">Tidak tersedia</string>
     <string name="pollutant">Polutan Utama: %1$s (%2$s)</string>
-    <string name="index">53</string>
-    <string name="description">Deskripsi</string>
     <string name="pollutant_type">Tipe polutan</string>
     <string name="activity_recommendations">Rekomendasi aktivitas</string>
     <string name="recommendations">Rekomendasi</string>
     <string name="air_quality_index">Indeks Kualitas Udara</string>
     <string name="concentration">31,56 μg/m³</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="data_not_available">Data tidak tersedia</string>
+
+    <!-- AQI -->
+    <string name="quality_index">Indeks Kualitas</string>
+    <string name="error_fetching_data">Gagal mengambil data: %1$s</string>
+    <string name="network_error">Error jaringan: %1$s</string>
+
+    <!-- AQI Descriptions -->
+    <string name="description">Deskripsi</string>
+    <string name="aqi_good">Baik</string>
+    <string name="aqi_moderate">Sedang</string>
+    <string name="aqi_sensitive_unhealthy">Tidak Sehat bagi Kelompok Sensitif</string>
+    <string name="aqi_unhealthy">Tidak Sehat</string>
+    <string name="aqi_very_unhealthy">Sangat Tidak Sehat</string>
+    <string name="aqi_hazardous">Berbahaya</string>
+    <string name="aqi_very_hazardous">Sangat Berbahaya</string>
+
+    <!-- Pollutant Full Names -->
+    <string name="ozone">Ozon</string>
+    <string name="carbon_monoxide">Karbon Monoksida</string>
+    <string name="nitrogen_dioxide">Nitrogen Dioksida</string>
+    <string name="particulate_matter_10">Materi Partikulat &lt; 10 mikron</string>
+    <string name="particulate_matter_2_5">Materi Partikulat &lt; 2.5 mikron</string>
+    <string name="sulfur_dioxide">Sulfur Dioksida</string>
+    <string name="unknown_pollutant">Tidak Diketahui</string>
+
+    <!-- AQI Recommendations -->
+    <string name="aqi_0_50">Kualitas udara sangat baik. Anda dapat beraktivitas di luar ruangan dengan aman.</string>
+    <string name="aqi_51_100">Kualitas udara cukup baik, tetapi hindari aktivitas fisik berat di luar ruangan jika memungkinkan.</string>
+    <string name="aqi_101_150">Kurangi aktivitas fisik berat di luar ruangan, terutama bagi kelompok sensitif.</string>
+    <string name="aqi_151_200">Disarankan untuk membatasi semua aktivitas luar ruangan. Fokuskan aktivitas di dalam ruangan.</string>
+    <string name="aqi_201_300">Kualitas udara sangat buruk. Hindari semua aktivitas di luar ruangan, tetaplah di dalam rumah.</string>
+    <string name="aqi_301_500">Kualitas udara sangat berbahaya. Jangan keluar rumah dan pastikan ventilasi udara di dalam ruangan baik.</string>
+    <string name="aqi_invalid">Data indeks kualitas udara tidak valid.</string>
+
+    <!-- Health Risks -->
+    <string name="health_risk_low">Risiko kesehatan sangat rendah atau tidak ada</string>
+    <string name="health_risk_moderate">Risiko moderat pada kelompok sensitif</string>
+    <string name="health_risk_high">Risiko tinggi pada kelompok sensitif</string>
+    <string name="health_risk_very_high">Risiko sangat tinggi pada kelompok sensitif</string>
+    <string name="health_risk_hazardous">Risiko kesehatan berbahaya, tetap di rumah</string>
+    <string name="health_risk_invalid">Data indeks kualitas udara tidak valid</string>
+
+    <!-- Descriptions -->
+    <string name="description_0_50">Tidak ada dampak signifikan terhadap kesehatan</string>
+    <string name="description_51_100">Gejala ringan pada penderita asma seperti batuk atau sesak napas.
+        \nIritasi ringan pada saluran pernapasan.</string>
+    <string name="description_101_150">Peningkatan risiko serangan asma.
+        \nGejala PPOK (Penyakit Paru Obstruktif Kronis) dapat memburuk.
+        \nPeningkatan tekanan darah bagi penderita penyakit jantung.
+        \nRisiko iritasi mata, hidung, dan tenggorokan pada anak-anak dan lansia.</string>
+    <string name="description_151_200">Serangan asma lebih sering terjadi.
+        \nGejala PPOK dapat semakin parah.
+        \nRisiko komplikasi kardiovaskular bagi penderita penyakit jantung.
+        \nAnak-anak, lansia, dan ibu hamil sangat rentan terhadap dampak polusi udara.</string>
+    <string name="description_201_300">Risiko kesehatan serius bagi penderita asma dan PPOK, termasuk kebutuhan perawatan medis darurat.
+        \nPeningkatan risiko serangan jantung bagi penderita penyakit jantung.
+        \nKerusakan paru-paru jangka pendek bagi anak-anak.</string>
+    <string name="description_301_500">Dampak sangat serius pada saluran pernapasan, terutama pada penderita asma dan PPOK.
+        \nRisiko serangan jantung akut.
+        \nPotensi kerusakan paru-paru permanen, terutama pada anak-anak dan lansia.
+        \nSemua kelompok sangat disarankan untuk tetap berada di dalam rumah.</string>
+    <string name="description_invalid">Indeks kualitas udara tidak valid</string>
+
 </resources>

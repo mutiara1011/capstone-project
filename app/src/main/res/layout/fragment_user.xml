@@ -38,23 +38,25 @@
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
                         android:textStyle="bold"
+                        android:fontFamily="@font/inria_serif_light"
+                        android:text="@string/quality_index"
                         android:textColor="?attr/colorOnSecondary"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Quality Index" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
 
                     <TextView
                         android:id="@+id/aqi_index"
-                        android:layout_width="0dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:paddingStart="9dp"
                         android:paddingEnd="9dp"
-                        android:text="@string/index"
                         android:textColor="?attr/colorOnSecondary"
                         android:textSize="45sp"
                         android:textStyle="bold"
+                        android:fontFamily="@font/inria_serif_light"
+                        tools:text="@string/index"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/quality_index"
@@ -68,6 +70,7 @@
                         android:textColor="?attr/colorOnSecondary"
                         android:textSize="15sp"
                         android:textStyle="bold"
+                        android:fontFamily="@font/inria_serif_light"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/aqi_index"
                         app:layout_constraintTop_toBottomOf="@+id/quality_index"
@@ -80,6 +83,8 @@
                         android:layout_toEndOf="@id/aqi_index"
                         android:textColor="?attr/colorOnSecondary"
                         android:textSize="13sp"
+                        android:fontFamily="@font/inria_serif_light"
+                        android:layout_marginBottom="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/aqi_index"
                         app:layout_constraintTop_toBottomOf="@+id/description"
@@ -92,7 +97,7 @@
                         android:layout_margin="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/aqi_index">
+                        app:layout_constraintTop_toBottomOf="@id/pollutant_type">
 
                         <View
                             android:layout_width="0dp"
@@ -158,6 +163,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/activity_recommendations"
                         android:textSize="19sp"
+                        android:fontFamily="@font/inria_serif_light"
                         android:textAlignment="center"
                         android:layout_gravity="center"
                         android:textColor="?attr/colorOnSecondary" />
@@ -186,6 +192,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/recommendations"
                         android:textSize="19sp"
+                        android:fontFamily="@font/inria_serif_light"
                         android:textAlignment="center"
                         android:textColor="?attr/colorOnSecondary"
                         app:layout_constraintTop_toTopOf="parent"
@@ -226,10 +233,11 @@
                         android:layout_height="wrap_content"
                         android:textSize="20sp"
                         android:textStyle="bold"
+                        android:fontFamily="@font/inria_serif_light"
                         android:textColor="?attr/colorOnSecondary"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        tools:text="@string/air_quality_index" />
+                        android:text="@string/air_quality_index" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recycler_pollutants"

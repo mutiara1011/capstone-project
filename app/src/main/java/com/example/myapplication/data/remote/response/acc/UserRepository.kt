@@ -1,12 +1,10 @@
 package com.example.myapplication.data.remote.response.acc
 
-import com.example.myapplication.data.remote.response.acc.pref.UserPreference
 import com.example.myapplication.data.remote.retrofit.ApiService
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class UserRepository private constructor(
-    private val userPreference: UserPreference,
     private val apiService: ApiService
 ) {
 
@@ -18,7 +16,7 @@ class UserRepository private constructor(
     }
 """.trimIndent()
 
-        val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), json)
+        val requestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
 
         return apiService.login(requestBody)
     }
@@ -28,11 +26,10 @@ class UserRepository private constructor(
         private var instance: UserRepository? = null
 
         fun getInstance(
-            userPreference: UserPreference,
             apiService: ApiService
         ): UserRepository =
             instance ?: synchronized(this) {
-                instance ?: UserRepository(userPreference, apiService)
+                instance ?: UserRepository(apiService)
             }.also { instance = it }
     }
 }

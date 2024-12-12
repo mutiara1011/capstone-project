@@ -6,13 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.remote.response.AqiDailyResponse
 import com.example.myapplication.data.remote.response.AqiDetailResponse
 import com.example.myapplication.data.remote.response.AqiPredictResponse
 import com.example.myapplication.data.remote.response.AqiResponse
 import com.example.myapplication.data.remote.response.Data
 import com.example.myapplication.data.remote.response.DataItem
 import com.example.myapplication.data.remote.retrofit.ApiConfig
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,11 +36,8 @@ class HomeViewModel : ViewModel() {
     private val _aqi = MutableLiveData<Data?>()
     val aqi: LiveData<Data?> = _aqi
 
-    private val _aqiIndeks = MutableLiveData<Int?>()
-    val aqiIndeks: LiveData<Int?> = _aqiIndeks
-
-    private val _aqiDescription = MutableLiveData<String?>()
-    val aqiDescription: LiveData<String?> = _aqiDescription
+    private val _aqiIndex = MutableLiveData<Int?>()
+    val aqiIndex: LiveData<Int?> = _aqiIndex
 
     private val _aqiPredict = MutableLiveData<List<DataItem>>()
     val aqiPredict: LiveData<List<DataItem>> = _aqiPredict
@@ -76,7 +73,7 @@ class HomeViewModel : ViewModel() {
         handler.post(object : Runnable {
             override fun run() {
                 _time.value = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-                handler.postDelayed(this, 1000) // Update setiap 1 detik
+                handler.postDelayed(this, 1000)
             }
         })
     }
@@ -93,10 +90,8 @@ class HomeViewModel : ViewModel() {
                     ) {
                         if (response.isSuccessful) {
                             val mainData = response.body()?.data?.main
-                            _aqiIndeks.postValue(mainData?.aqiIndex)
-                            _aqiDescription.postValue(
-                                mainData?.aqiIndex?.let { getAQIDescription(it) } ?: "Data tidak tersedia"
-                            )
+                            _aqiIndex.postValue(mainData?.aqiIndex)
+
                             _loadingState.postValue(false)
                         } else {
                             _errorState.value = "Error: ${response.errorBody()?.string()}"
@@ -115,18 +110,6 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    private fun getAQIDescription(aqiIndex: Int): String {
-        return when (aqiIndex) {
-            in 0..50 -> "Baik"
-            in 51..100 -> "Sedang"
-            in 101..150 -> "Tidak Sehat bagi Kelompok Sensitif"
-            in 151..200 -> "Tidak Sehat"
-            in 201..300 -> "Sangat Tidak Sehat"
-            in 301..500 -> "Berbahaya"
-            else -> "Sangat Berbahaya"
-        }
-    }
-
     private fun getWeather() {
         val client = ApiConfig.getApiService().getAQI()
         _loadingState.postValue(true)
@@ -136,18 +119,19 @@ class HomeViewModel : ViewModel() {
                 response: Response<AqiResponse>
             ) {
                 if (response.isSuccessful) {
-                    Log.d("HomeViewModel", "API Response: ${response.body()}")
                     _aqi.value = response.body()?.data
                     _loadingState.postValue(false)
                 } else {
-                    Log.e("HomeViewModel", "Error: ${response.errorBody()}")
+                    _errorState.postValue("Error: ${response.errorBody()?.string()}")
                 }
             }
             override fun onFailure(call: Call<AqiResponse>, t: Throwable) {
-                Log.e("HomeViewModel", "Error fetching data", t)
+                _errorState.postValue("Error fetching data: ${t.localizedMessage}")
+                _loadingState.postValue(false)
             }
         })
     }
+
 
     fun getPredict() {
         val client = ApiConfig.getApiService().getAQIPredict()
@@ -181,5 +165,4 @@ class HomeViewModel : ViewModel() {
             }
         })
     }
-
 }
