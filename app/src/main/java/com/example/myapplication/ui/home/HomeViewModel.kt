@@ -1,7 +1,6 @@
 package com.example.myapplication.ui.home
 
 import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,7 +16,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 @Suppress("SameParameterValue")
 class HomeViewModel : ViewModel() {
@@ -128,14 +128,11 @@ class HomeViewModel : ViewModel() {
                         dataItem?.let { ItemType.HourItem(it) }
                     } ?: emptyList()
                     _itemListHour.value = data
-                } else {
-                    Log.e("AqiPredict", "Error: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<AqiPredictResponse>, t: Throwable) {
                 _isLoading.postValue(false)
-                Log.e("AqiPredict", "Failure: ${t.localizedMessage}")
             }
         })
     }
@@ -151,15 +148,11 @@ class HomeViewModel : ViewModel() {
                         ItemType.DayItem(dailyDataItem)
                     } ?: emptyList()
                     _itemListDaily.value = data
-                    Log.d("AqiPredict", "Data: $data")
-                } else {
-                    Log.e("AqiPredict", "Error: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<AqiDailyResponse>, t: Throwable) {
                 _isLoading.postValue(false)
-                Log.e("AqiPredict", "Failure: ${t.localizedMessage}")
             }
         })
     }

@@ -35,7 +35,6 @@ class SignupViewModel : ViewModel() {
 
             }
             catch (e: Exception) {
-                Log.e("SignupViewModel", "Error: ${e.message}")
                 callback(false, e.message.toString())
             }
         }
