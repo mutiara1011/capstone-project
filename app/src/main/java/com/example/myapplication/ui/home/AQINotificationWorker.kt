@@ -25,7 +25,7 @@ class AQINotificationWorker(
         val lastNotificationTime = sharedPreferences.getLong("lastNotificationTime", 0L)
         val currentTime = System.currentTimeMillis()
 
-        if (aqiIndex >= 40 && (currentTime - lastNotificationTime > 30 * 60 * 1000)) {
+        if (aqiIndex >= 150 && (currentTime - lastNotificationTime > 30 * 60 * 1000)) {
             sendAqiAlertNotification(aqiIndex)
 
             sharedPreferences.edit().putBoolean("isNotificationSent", true).apply()

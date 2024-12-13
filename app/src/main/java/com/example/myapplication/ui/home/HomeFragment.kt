@@ -37,7 +37,6 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var adapter: HomeAdapter
-    private lateinit var lineChart: LineChart
     private lateinit var userPreference: UserPreference
 
     override fun onCreateView(
@@ -83,7 +82,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeLoadingState() {
-        homeViewModel.loadingState.observe(viewLifecycleOwner) { isLoading ->
+        homeViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
     }
@@ -101,11 +100,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (requireActivity() as AppCompatActivity).supportActionBar?.apply {
-            setDisplayShowTitleEnabled(false)
-            setLogo(R.drawable.logo)
-            setDisplayUseLogoEnabled(true)
-        }
+        setupRecyclerView()
 
         observeLoadingState()
 
@@ -113,13 +108,11 @@ class HomeFragment : Fragment() {
             binding.textTime.text = currentTime
         }
 
-        setupRecyclerView()
-        observePredict()
-        homeViewModel.getPredict()
+        homeViewModel.itemList.observe(viewLifecycleOwner) { items ->
+            adapter.submitList(items)
+        }
 
-        lineChart = view.findViewById(R.id.lineChart)
-        observeDaily()
-        homeViewModel.getDaily()
+        observeViewModel()
 
     }
 
@@ -199,99 +192,44 @@ class HomeFragment : Fragment() {
         binding.ivWeatherIcon.setImageResource(R.drawable.ic_default_weather)
     }
 
-    private fun observePredict() {
-        homeViewModel.aqiPredict.observe(viewLifecycleOwner) { aqiPredict ->
-            if (aqiPredict != null) {
-                adapter.submitList(aqiPredict)
-            }
-        }
-    }
-
     private fun setupRecyclerView() {
         adapter = HomeAdapter()
-        binding.recyclerViewHour.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = adapter
-        }
+
         binding.progressRecyclerViewHour.visibility = View.VISIBLE
 
-        homeViewModel.aqiPredict.observe(viewLifecycleOwner) { aqiPredict ->
-            if (aqiPredict != null) {
-                binding.recyclerViewHour.adapter = adapter
-                binding.progressRecyclerViewHour.visibility = View.GONE
-            } else {
-                Toast.makeText(context, "Data not available", Toast.LENGTH_SHORT).show()
-                binding.progressRecyclerViewHour.visibility = View.GONE
-            }
+        binding.recyclerViewHour.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = HomeAdapter()
+        }
+
+        binding.progressRecycleViewDay.visibility = View.VISIBLE
+        binding.recyclerViewDay.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            adapter = HomeAdapter()
         }
     }
 
-    private fun observeDaily() {
-        homeViewModel.aqiDaily.observe(viewLifecycleOwner) { aqiDaily ->
-            if (aqiDaily != null) {
-                Log.d("AQI Data", "Data received: $aqiDaily")
-                setupLineChart(aqiDaily)
-            } else {
-                Log.d("AQI Data", "No data available")
-            }
+    private fun observeViewModel() {
+        homeViewModel.itemList.observe(viewLifecycleOwner) { items ->
+
+            val hourlyPredict = items.filterIsInstance<ItemType.HourItem>()
+            Log.d("HomeFragment", "Items: $items")
+            val dailyPredict = items.filterIsInstance<ItemType.DayItem>()
+
+            val adapterHour = binding.recyclerViewHour.adapter as HomeAdapter
+            adapterHour.submitList(hourlyPredict)
+
+            val adapterDay = binding.recyclerViewDay.adapter as HomeAdapter
+            adapterDay.submitList(dailyPredict)
+
+            binding.progressRecyclerViewHour.visibility = View.GONE
+            binding.progressRecycleViewDay.visibility = View.GONE
+
+            binding.recyclerViewHour.visibility = View.VISIBLE
+            binding.recyclerViewDay.visibility = View.VISIBLE
         }
     }
 
-    private fun setupLineChart(dailyData: List<DailyDataItem>) {
-        val entries = ArrayList<Entry>()
-
-        // Ambil hanya 7 data terakhir atau sesuaikan sesuai kebutuhan
-        val dataToDisplay = dailyData.takeLast(7)
-
-        for (i in dataToDisplay.indices) {
-            val date = dataToDisplay[i].date
-            val aqiValue = dataToDisplay[i].detail.firstOrNull()?.aqiIndex ?: 0
-
-            if (aqiValue > 0) {
-                entries.add(Entry(i.toFloat(), aqiValue.toFloat()))
-            }
-        }
-
-        val dataSet = LineDataSet(entries, "AQI Daily")
-        dataSet.apply {
-            color = resources.getColor(R.color.teal_200, null)
-            setCircleColor(resources.getColor(R.color.teal_200, null))
-            lineWidth = 3f
-            setDrawValues(false)
-            mode = LineDataSet.Mode.CUBIC_BEZIER
-            setDrawFilled(true)
-            fillColor = resources.getColor(R.color.teal_200, null)
-        }
-
-        val lineData = LineData(dataSet)
-        lineChart.data = lineData
-
-        // Konfigurasi X-Axis
-        lineChart.xAxis.apply {
-            position = XAxis.XAxisPosition.BOTTOM
-            granularity = 1f
-            setDrawLabels(true)
-            // Menampilkan label hanya untuk 7 data terakhir
-            valueFormatter = IndexAxisValueFormatter(dataToDisplay.map { it.date })
-            labelRotationAngle = 0f
-            // Membatasi jumlah label X-axis hanya 7
-            setLabelCount(7, true)
-        }
-
-        lineChart.axisRight.isEnabled = false
-        lineChart.axisLeft.isEnabled = true
-
-        lineChart.setTouchEnabled(true)
-        lineChart.setPinchZoom(true)
-        lineChart.description.text = "Weekly AQI Forecast"
-
-        lineChart.animateX(1500, Easing.EaseInOutQuad)
-
-        val markerView = CustomMarkerView(requireContext(), R.layout.marker_view)
-        lineChart.marker = markerView
-
-        lineChart.invalidate()
-    }
 
 
     override fun onDestroyView() {
