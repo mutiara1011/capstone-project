@@ -20,7 +20,7 @@
     <string name="session_save_failed">Failed to save user session</string>
     <string name="fill_fields">Please fill in all fields</string>
     <string name="register_success">Registration successful!</string>
-    <string name="success_message">An account with %1$s has been successfully registered.</string>
+    <string name="success_message">An account with %1$s has been successfully registered. Come on, log in to continue</string>
     <string name="ok">OK</string>
     <string name="name">Username</string>
     <string name="email">Email</string>

@@ -50,7 +50,7 @@
         android:label="Signup"
         tools:layout="@layout/fragment_signup">
         <action
-            android:id="@+id/action_signupFragment_to_homeFragment"
+            android:id="@+id/action_signupFragment_to_welcomeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 

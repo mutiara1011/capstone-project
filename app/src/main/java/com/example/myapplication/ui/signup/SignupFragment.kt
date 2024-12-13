@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentSignupBinding
 
@@ -85,7 +86,9 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
         AlertDialog.Builder(requireContext()).apply {
             setTitle(getString(R.string.register_success))
             setMessage(getString(R.string.success_message, email))
-            setPositiveButton(getString(R.string.ok)) { _, _ -> }
+            setPositiveButton(getString(R.string.ok)) { _, _ ->
+                findNavController().navigate(R.id.action_signupFragment_to_welcomeFragment)
+            }
             create()
             show()
         }

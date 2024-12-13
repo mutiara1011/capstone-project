@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,17 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.myapplication.R
-import com.example.myapplication.data.remote.response.DailyDataItem
 import com.example.myapplication.data.remote.response.acc.pref.UserPreference
 import com.example.myapplication.data.remote.response.acc.pref.dataStore
 import com.example.myapplication.databinding.FragmentHomeBinding
-import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit

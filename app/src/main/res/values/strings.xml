@@ -20,7 +20,7 @@
     <string name="session_save_failed">Gagal menyimpan sesi pengguna</string>
     <string name="fill_fields">Harap isi semua kolom</string>
     <string name="register_success">Pendaftaran berhasil!</string>
-    <string name="success_message">Akun dengan %1$s berhasil didaftarkan.</string>
+    <string name="success_message">Akun dengan %1$s berhasil didaftarkan! Yuk Login untuk melanjutkan</string>
     <string name="ok">OK</string>
     <string name="name">Nama Pengguna</string>
     <string name="email">Email</string>
