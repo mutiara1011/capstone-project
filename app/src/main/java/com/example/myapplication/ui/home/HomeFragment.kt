@@ -50,10 +50,6 @@ class HomeFragment : Fragment() {
         observePollutants()
         observeWeatherData()
 
-        binding.textAqi.setOnClickListener { navigateToUserFragment() }
-        binding.aqi.setOnClickListener { navigateToUserFragment() }
-        binding.textDescription.setOnClickListener { navigateToUserFragment() }
-
         return binding.root
     }
 
@@ -75,16 +71,6 @@ class HomeFragment : Fragment() {
         homeViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
-    }
-
-    private fun navigateToUserFragment() {
-        findNavController().navigate(
-            R.id.action_homeFragment_to_userFragment,
-            null,
-            androidx.navigation.NavOptions.Builder()
-                .setPopUpTo(R.id.homeFragment, true)
-                .build()
-        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
