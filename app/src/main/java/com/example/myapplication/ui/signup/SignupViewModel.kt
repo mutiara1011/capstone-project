@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.signup
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.remote.response.acc.RegisterResponse
@@ -35,7 +34,6 @@ class SignupViewModel : ViewModel() {
 
             }
             catch (e: Exception) {
-                Log.e("SignupViewModel", "Error: ${e.message}")
                 callback(false, e.message.toString())
             }
         }

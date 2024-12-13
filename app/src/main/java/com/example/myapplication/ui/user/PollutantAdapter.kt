@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.user
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -17,8 +16,6 @@ class PollutantAdapter(private val pollutants: List<PollutantData>) :
     override fun onBindViewHolder(holder: PollutantViewHolder, position: Int) {
         val pollutant = pollutants[position]
         holder.bind(pollutant)
-        Log.d("PollutantAdapter", "Item at position $position: $pollutant")
-
     }
 
     override fun getItemCount(): Int = pollutants.size
