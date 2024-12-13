@@ -2,11 +2,9 @@ package com.example.myapplication.ui.home
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,17 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.myapplication.R
-import com.example.myapplication.data.remote.response.DailyDataItem
 import com.example.myapplication.data.remote.response.acc.pref.UserPreference
 import com.example.myapplication.data.remote.response.acc.pref.dataStore
 import com.example.myapplication.databinding.FragmentHomeBinding
-import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -108,7 +98,11 @@ class HomeFragment : Fragment() {
             binding.textTime.text = currentTime
         }
 
-        homeViewModel.itemList.observe(viewLifecycleOwner) { items ->
+        homeViewModel.itemListHour.observe(viewLifecycleOwner) { items ->
+            adapter.submitList(items)
+        }
+
+        homeViewModel.itemListDaily.observe(viewLifecycleOwner) { items ->
             adapter.submitList(items)
         }
 
@@ -210,22 +204,26 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        homeViewModel.itemList.observe(viewLifecycleOwner) { items ->
+        homeViewModel.itemListHour.observe(viewLifecycleOwner) { items ->
 
             val hourlyPredict = items.filterIsInstance<ItemType.HourItem>()
-            Log.d("HomeFragment", "Items: $items")
-            val dailyPredict = items.filterIsInstance<ItemType.DayItem>()
 
             val adapterHour = binding.recyclerViewHour.adapter as HomeAdapter
             adapterHour.submitList(hourlyPredict)
 
+            binding.progressRecyclerViewHour.visibility = View.GONE
+
+            binding.recyclerViewHour.visibility = View.VISIBLE
+        }
+
+        homeViewModel.itemListDaily.observe(viewLifecycleOwner) { items ->
+            val dailyPredict = items.filterIsInstance<ItemType.DayItem>()
+
             val adapterDay = binding.recyclerViewDay.adapter as HomeAdapter
             adapterDay.submitList(dailyPredict)
 
-            binding.progressRecyclerViewHour.visibility = View.GONE
             binding.progressRecycleViewDay.visibility = View.GONE
 
-            binding.recyclerViewHour.visibility = View.VISIBLE
             binding.recyclerViewDay.visibility = View.VISIBLE
         }
     }

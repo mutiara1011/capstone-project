@@ -40,8 +40,11 @@ class HomeViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _itemList = MutableLiveData<List<ItemType>>()
-    val itemList: LiveData<List<ItemType>> = _itemList
+    private val _itemListHour = MutableLiveData<List<ItemType>>()
+    val itemListHour: LiveData<List<ItemType>> = _itemListHour
+
+    private val _itemListDaily = MutableLiveData<List<ItemType>>()
+    val itemListDaily: LiveData<List<ItemType>> = _itemListDaily
 
     init {
         updateTime()
@@ -124,7 +127,7 @@ class HomeViewModel : ViewModel() {
                     val data = response.body()?.data?.mapNotNull { dataItem ->
                         dataItem?.let { ItemType.HourItem(it) }
                     } ?: emptyList()
-                    _itemList.value = data
+                    _itemListHour.value = data
                 } else {
                     Log.e("AqiPredict", "Error: ${response.message()}")
                 }
@@ -147,7 +150,7 @@ class HomeViewModel : ViewModel() {
                     val data = response.body()?.data?.map { dailyDataItem ->
                         ItemType.DayItem(dailyDataItem)
                     } ?: emptyList()
-                    _itemList.value = data
+                    _itemListDaily.value = data
                     Log.d("AqiPredict", "Data: $data")
                 } else {
                     Log.e("AqiPredict", "Error: ${response.message()}")
