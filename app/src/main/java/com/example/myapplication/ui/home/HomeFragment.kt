@@ -2,7 +2,6 @@ package com.example.myapplication.ui.home
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -99,7 +98,11 @@ class HomeFragment : Fragment() {
             binding.textTime.text = currentTime
         }
 
-        homeViewModel.itemList.observe(viewLifecycleOwner) { items ->
+        homeViewModel.itemListHour.observe(viewLifecycleOwner) { items ->
+            adapter.submitList(items)
+        }
+
+        homeViewModel.itemListDaily.observe(viewLifecycleOwner) { items ->
             adapter.submitList(items)
         }
 
@@ -201,22 +204,26 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        homeViewModel.itemList.observe(viewLifecycleOwner) { items ->
+        homeViewModel.itemListHour.observe(viewLifecycleOwner) { items ->
 
             val hourlyPredict = items.filterIsInstance<ItemType.HourItem>()
-            Log.d("HomeFragment", "Items: $items")
-            val dailyPredict = items.filterIsInstance<ItemType.DayItem>()
 
             val adapterHour = binding.recyclerViewHour.adapter as HomeAdapter
             adapterHour.submitList(hourlyPredict)
 
+            binding.progressRecyclerViewHour.visibility = View.GONE
+
+            binding.recyclerViewHour.visibility = View.VISIBLE
+        }
+
+        homeViewModel.itemListDaily.observe(viewLifecycleOwner) { items ->
+            val dailyPredict = items.filterIsInstance<ItemType.DayItem>()
+
             val adapterDay = binding.recyclerViewDay.adapter as HomeAdapter
             adapterDay.submitList(dailyPredict)
 
-            binding.progressRecyclerViewHour.visibility = View.GONE
             binding.progressRecycleViewDay.visibility = View.GONE
 
-            binding.recyclerViewHour.visibility = View.VISIBLE
             binding.recyclerViewDay.visibility = View.VISIBLE
         }
     }
