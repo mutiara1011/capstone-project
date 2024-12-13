@@ -10,9 +10,7 @@ import com.example.myapplication.data.remote.response.AqiDailyResponse
 import com.example.myapplication.data.remote.response.AqiDetailResponse
 import com.example.myapplication.data.remote.response.AqiPredictResponse
 import com.example.myapplication.data.remote.response.AqiResponse
-import com.example.myapplication.data.remote.response.DailyDataItem
 import com.example.myapplication.data.remote.response.Data
-import com.example.myapplication.data.remote.response.DataItem
 import com.example.myapplication.data.remote.retrofit.ApiConfig
 import kotlinx.coroutines.launch
 import retrofit2.Call
@@ -39,22 +37,19 @@ class HomeViewModel : ViewModel() {
     private val _aqiIndex = MutableLiveData<Int?>()
     val aqiIndex: LiveData<Int?> = _aqiIndex
 
-    private val _aqiPredict = MutableLiveData<List<DataItem>>()
-    val aqiPredict: LiveData<List<DataItem>> = _aqiPredict
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _aqiDaily = MutableLiveData<List<DailyDataItem>?>()
-    val aqiDaily: LiveData<List<DailyDataItem>?> get() = _aqiDaily
-
-    private val _loadingState = MutableLiveData<Boolean>()
-    val loadingState: LiveData<Boolean> = _loadingState
+    private val _itemList = MutableLiveData<List<ItemType>>()
+    val itemList: LiveData<List<ItemType>> = _itemList
 
     init {
         updateTime()
         updateDateLocale()
         getWeather()
         fetchPollutants()
-        getPredict()
-        getDaily()
+        fetchPredictData()
+        fetchDailyData()
     }
 
     private fun updateTime() {
@@ -74,7 +69,7 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun fetchPollutants() {
-        _loadingState.postValue(true)
+        _isLoading.postValue(true)
         viewModelScope.launch {
             try {
                 val client = ApiConfig.getApiService().getAQIDetail()
@@ -86,23 +81,23 @@ class HomeViewModel : ViewModel() {
                         if (response.isSuccessful) {
                             val mainData = response.body()?.data?.main
                             _aqiIndex.postValue(mainData?.aqiIndex)
-                            _loadingState.postValue(false)
+                            _isLoading.postValue(false)
                         }
                     }
 
                     override fun onFailure(call: Call<AqiDetailResponse>, t: Throwable) {
-                        _loadingState.postValue(false)
+                        _isLoading.postValue(false)
                     }
                 })
             } catch (e: Exception) {
-                _loadingState.postValue(false)
+                _isLoading.postValue(false)
             }
         }
     }
 
     private fun getWeather() {
         val client = ApiConfig.getApiService().getAQI()
-        _loadingState.postValue(true)
+        _isLoading.postValue(true)
         client.enqueue(object : Callback<AqiResponse> {
             override fun onResponse(
                 call: Call<AqiResponse>,
@@ -110,72 +105,60 @@ class HomeViewModel : ViewModel() {
             ) {
                 if (response.isSuccessful) {
                     _aqi.value = response.body()?.data
-                    _loadingState.postValue(false)
+                    _isLoading.postValue(false)
                 }
             }
             override fun onFailure(call: Call<AqiResponse>, t: Throwable) {
-                _loadingState.postValue(false)
+                _isLoading.postValue(false)
             }
         })
     }
 
-    fun getPredict() {
+    private fun fetchPredictData() {
+        _isLoading.postValue(true)
         val client = ApiConfig.getApiService().getAQIPredict()
-        _loadingState.postValue(true)
         client.enqueue(object : Callback<AqiPredictResponse> {
-            override fun onResponse(
-                call: Call<AqiPredictResponse>,
-                response: Response<AqiPredictResponse>
-            ) {
+            override fun onResponse(call: Call<AqiPredictResponse>, response: Response<AqiPredictResponse>) {
+                _isLoading.postValue(false)
                 if (response.isSuccessful) {
-                    val data = response.body()?.data?.filterNotNull()?.mapNotNull { dataItem ->
-                        if (dataItem.time.isNullOrEmpty() || dataItem.mainPolutant == null) null
-                        else dataItem.copy(
-                            detail = dataItem.detail?.filterNotNull()
-                        )
+                    val data = response.body()?.data?.mapNotNull { dataItem ->
+                        dataItem?.let { ItemType.HourItem(it) }
                     } ?: emptyList()
-                    _aqiPredict.value = data
-                    _loadingState.postValue(false)
+                    _itemList.value = data
+                } else {
+                    Log.e("AqiPredict", "Error: ${response.message()}")
                 }
             }
+
             override fun onFailure(call: Call<AqiPredictResponse>, t: Throwable) {
-                _loadingState.postValue(false)
+                _isLoading.postValue(false)
+                Log.e("AqiPredict", "Failure: ${t.localizedMessage}")
             }
         })
     }
 
-    fun getDaily() {
+    private fun fetchDailyData() {
+        _isLoading.postValue(true)
         val client = ApiConfig.getApiService().getAQIDaily()
-        _loadingState.postValue(true)
         client.enqueue(object : Callback<AqiDailyResponse> {
-            override fun onResponse(
-                call: Call<AqiDailyResponse>,
-                response: Response<AqiDailyResponse>
-            ) {
+            override fun onResponse(call: Call<AqiDailyResponse>, response: Response<AqiDailyResponse>) {
+                _isLoading.postValue(false)
                 if (response.isSuccessful) {
-                    val data = response.body()?.data?.mapNotNull { dailyDataItem ->
-                        if (dailyDataItem.date.isEmpty()) null
-                        else dailyDataItem.copy(
-                            detail = dailyDataItem.detail
-                        )
+                    val data = response.body()?.data?.map { dailyDataItem ->
+                        ItemType.DayItem(dailyDataItem)
                     } ?: emptyList()
-
-                    // Log data yang diterima
-                    Log.d("AQI Data", "Data received: $data")
-
-                    // Cek apakah data kosong
-                    if (data.isNotEmpty()) {
-                        _aqiDaily.value = data
-                    } else {
-                        Log.d("AQI Data", "No data available")
-                        _aqiDaily.value = emptyList() // Menyediakan list kosong
-                    }
+                    _itemList.value = data
+                    Log.d("AqiPredict", "Data: $data")
+                } else {
+                    Log.e("AqiPredict", "Error: ${response.message()}")
                 }
             }
 
             override fun onFailure(call: Call<AqiDailyResponse>, t: Throwable) {
-                _loadingState.postValue(false)
+                _isLoading.postValue(false)
+                Log.e("AqiPredict", "Failure: ${t.localizedMessage}")
             }
         })
     }
+
 }
